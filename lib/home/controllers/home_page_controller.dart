@@ -15,13 +15,6 @@ class HomePageController extends GetxController {
 
   Stream<String> get messagesStream => _streamController.stream;
 
-  Future<void> reconnectSocket() async {
-    errorMsg('');
-    receivedMessage1.clear();
-    socket.disconnect();
-    socket.dispose();
-    connectSocket();
-  }
 
   Future<void> connectSocket() async {
     print('try to connect...');
@@ -35,6 +28,15 @@ class HomePageController extends GetxController {
     _socketListeners();
   }
 
+  Future<void> reconnectSocket() async {
+    errorMsg('');
+    receivedMessage1.clear();
+    socket.disconnect();
+    socket.dispose();
+    connectSocket();
+  }
+
+  /// listen to socket events
   void _socketListeners() {
     socket.onConnect((_) {
       isSocketConnect(true);
@@ -62,16 +64,16 @@ class HomePageController extends GetxController {
     });
   }
 
+  /// history dialog list
   void getHistoryList() {
     socket.emit('get');
-
     socket.on('history', (data) {
       List receivedList = data['data'];
-      // print(receivedList);
-      // List<String> list = [];
-      // receivedList.map((e) => list.add(e));
       historyList(receivedList);
       print(historyList.length);
     });
   }
+
+  /// record voice
+
 }
