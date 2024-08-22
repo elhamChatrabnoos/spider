@@ -1,64 +1,52 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart';
+import 'package:sockettest/app/config/app_helper.dart';
+import 'package:sockettest/app/config/socket_config.dart';
 
 class HomePageController extends GetxController {
   RxList<String> receivedMessage1 = RxList([]);
   RxString errorMsg = ''.obs;
   RxList<dynamic> historyList = RxList([]);
-
   RxBool isSocketConnect = false.obs;
-
-  late Socket socket;
-  final StreamController<String> _streamController = StreamController<String>();
-
-  Stream<String> get messagesStream => _streamController.stream;
-
-
-  Future<void> connectSocket() async {
-    print('try to connect...');
-    isSocketConnect(false);
-
-    socket = io("https://test.spider-cryptobot.site", <String, dynamic>{
-      'autoConnect': false,
-      'transports': ['websocket'],
-    });
-    socket.connect();
-    _socketListeners();
-  }
 
   Future<void> reconnectSocket() async {
     errorMsg('');
     receivedMessage1.clear();
-    socket.disconnect();
-    socket.dispose();
-    connectSocket();
+    SocketConfig.socket.disconnect();
+    SocketConfig.socket.dispose();
+    socketListeners();
   }
 
   /// listen to socket events
-  void _socketListeners() {
-    socket.onConnect((_) {
+  void socketListeners() async {
+    await SocketConfig.connectSocket();
+
+    SocketConfig.socket.onConnect((_) {
       isSocketConnect(true);
       print("Connection established");
     });
 
-    socket.on('backData', (data) {
+    SocketConfig.socket.on('backData', (data) {
       print(data);
       receivedMessage1.add(data['data']);
     });
 
-    socket.on('backData2', (data) {
+    SocketConfig.socket.on('backData2', (data) {
       receivedMessage1.add(data['data']);
       print(data);
     });
 
-    socket.onDisconnect((_) {
+    SocketConfig.socket.onDisconnect((_) {
       isSocketConnect(false);
       print("connection Disconnect");
     });
 
-    socket.onError((err) {
+    SocketConfig.socket.onError((err) {
       errorMsg('Error occur when connect to socket: $err');
       print('on error $err');
     });
@@ -66,14 +54,94 @@ class HomePageController extends GetxController {
 
   /// history dialog list
   void getHistoryList() {
-    socket.emit('get');
-    socket.on('history', (data) {
+    SocketConfig.socket.emit('get');
+    SocketConfig.socket.on('history', (data) {
       List receivedList = data['data'];
       historyList(receivedList);
       print(historyList.length);
     });
   }
 
-  /// record voice
+  @override
+  onInit() {
+    initTts();
+    super.onInit();
+  }
 
+  /// send voice and set response
+  void sendVoiceToServer(String targetText) {
+    SocketConfig.socket.emit('message', {'data': targetText});
+    SocketConfig.socket.on(
+      'answer',
+      (data) {
+        AppHelper.customPrint('data: ${data['data']}');
+        AppHelper.customPrint('message: ${data['message']}');
+
+        receivedMessage1.add(data['data']);
+        speak(data['message']);
+      },
+    );
+  }
+
+  /// change response to speech
+  FlutterTts flutterTts = FlutterTts();
+
+  bool get isAndroid => !kIsWeb && Platform.isAndroid;
+  double volume = 0.5;
+  double pitch = 1.0;
+  double rate = 0.45;
+
+  Future<void> _getDefaultEngine() async {
+    var engine = await flutterTts.getDefaultEngine;
+    if (engine != null) {
+      print(engine);
+    }
+  }
+
+  Future<void> _getDefaultVoice() async {
+    var voice = await flutterTts.getDefaultVoice;
+    if (voice != null) {
+      print(voice);
+    }
+  }
+
+  void initTts() {
+    flutterTts = FlutterTts();
+    _setAwaitOptions();
+
+    if (isAndroid) {
+      _getDefaultEngine();
+      _getDefaultVoice();
+    }
+
+    flutterTts.setStartHandler(() {
+      AppHelper.customPrint('start speaking');
+    });
+
+    flutterTts.setCompletionHandler(() {
+      AppHelper.customPrint('speak complete');
+    });
+
+    flutterTts.setErrorHandler((msg) {
+      AppHelper.customPrint('error when speak $msg');
+    });
+  }
+
+  Future<void> speak(String text) async {
+    await flutterTts.setVolume(volume);
+    await flutterTts.setSpeechRate(rate);
+    await flutterTts.setPitch(pitch);
+    await flutterTts.speak(text);
+  }
+
+  Future<void> _setAwaitOptions() async {
+    await flutterTts.awaitSpeakCompletion(true);
+  }
+
+  @override
+  void dispose() {
+    flutterTts.stop();
+    flutterTts.clearVoice();
+    super.dispose();
+  }
 }

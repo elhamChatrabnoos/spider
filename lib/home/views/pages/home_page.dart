@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sockettest/app/config/app_colors.dart';
+import 'package:sockettest/app/config/app_helper.dart';
 import 'package:sockettest/home/views/widgets/main_list_widget.dart';
+import 'package:sockettest/home/views/widgets/record_sound_diaolog.dart';
 
 import '../../controllers/home_page_controller.dart';
 import '../widgets/custom_text.dart';
@@ -13,8 +16,31 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.connectSocket();
+    controller.socketListeners();
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.grey,
+        onPressed: () {
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context) {
+              return RecordSoundDialog();
+            },
+          ).then(
+            (value) {
+              if (value != null) {
+                AppHelper.log.w('value after close dialog : $value');
+                controller.sendVoiceToServer(value);
+              }
+            },
+          );
+        },
+        child: Icon(
+          Icons.mic,
+          color: Colors.white,
+        ),
+      ),
       appBar: AppBar(
         backgroundColor: Colors.white.withOpacity(0.4),
         title: Row(

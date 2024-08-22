@@ -15,7 +15,7 @@ class MainListWidget extends GetView<HomePageController> {
           Expanded(
             child: ListView(
               shrinkWrap: true,
-              children: controller.receivedMessage1.map(
+              children: controller.receivedMessage1.reversed.map(
                     (element) {
                   return Container(
                     padding: const EdgeInsets.all(10),
