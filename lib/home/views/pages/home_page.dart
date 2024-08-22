@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sockettest/app/config/app_colors.dart';
 import 'package:sockettest/app/config/app_helper.dart';
 import 'package:sockettest/home/views/widgets/main_list_widget.dart';
 import 'package:sockettest/home/views/widgets/record_sound_diaolog.dart';
