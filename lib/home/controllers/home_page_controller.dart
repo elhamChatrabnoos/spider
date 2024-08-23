@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
-import 'package:get_ip_address/get_ip_address.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:sockettest/app/config/app_helper.dart';
