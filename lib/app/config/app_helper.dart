@@ -3,9 +3,9 @@ import 'package:logger/logger.dart';
 class AppHelper{
 
 
-  static customPrint(String message){
+  static customPrint(dynamic message){
     Logger log = Logger();
-    log.w(message);
+    log.w(message.toString());
   }
 
 

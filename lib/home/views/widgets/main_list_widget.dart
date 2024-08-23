@@ -14,6 +14,7 @@ class MainListWidget extends GetView<HomePageController> {
         children: [
           Expanded(
             child: ListView(
+              physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               children: controller.receivedMessage1.reversed.map(
                     (element) {

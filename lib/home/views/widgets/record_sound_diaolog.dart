@@ -57,18 +57,6 @@ class RecordSoundDialog extends StatelessWidget {
           );
         }),
       ),
-      actions: [
-        Obx(() {
-          return controller.listeningStarted.value
-              ? SizedBox()
-              : CustomText(
-                  text: 'close',
-                  onClickText: () async {
-                    Get.back();
-                  },
-                );
-        }),
-      ],
     );
   }
 }

@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
-import 'package:network_info_plus/network_info_plus.dart';
+import 'package:get_ip_address/get_ip_address.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:sockettest/app/config/app_helper.dart';
 import 'package:sockettest/app/config/socket_config.dart';
@@ -34,13 +34,11 @@ class HomePageController extends GetxController {
     });
 
     SocketConfig.socket.on('backData', (data) {
-      AppHelper.customPrint(data);
       receivedMessage1.add(data['data']);
     });
 
     SocketConfig.socket.on('backData2', (data) {
       receivedMessage1.add(data['data']);
-      AppHelper.customPrint(data);
     });
 
     SocketConfig.socket.on(
@@ -68,9 +66,9 @@ class HomePageController extends GetxController {
   String ipAddress = '';
 
   Future<void> _getSystemIp() async {
-    final info = NetworkInfo();
-    ipAddress = await info.getWifiIP() ?? '';
-    AppHelper.customPrint('Ip address : $ipAddress');
+    var ipAddress = IpAddress(type: RequestType.json);
+    dynamic data = await ipAddress.getIpAddress();
+    AppHelper.customPrint('Ip address : ${data['ip']}');
   }
 
   /// history dialog list
@@ -132,18 +130,6 @@ class HomePageController extends GetxController {
       _getDefaultEngine();
       _getDefaultVoice();
     }
-
-    flutterTts.setStartHandler(() {
-      AppHelper.customPrint('start speaking');
-    });
-
-    flutterTts.setCompletionHandler(() {
-      AppHelper.customPrint('speak complete');
-    });
-
-    flutterTts.setErrorHandler((msg) {
-      AppHelper.customPrint('error when speak $msg');
-    });
   }
 
   Future<void> speak(String text) async {

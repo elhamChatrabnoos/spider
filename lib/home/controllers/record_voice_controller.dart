@@ -5,8 +5,10 @@ import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 class RecordVoiceController extends GetxController {
+
   @override
   void onInit() {
+    startListening();
     super.onInit();
   }
 
@@ -14,43 +16,65 @@ class RecordVoiceController extends GetxController {
   RxBool speechEnabled = false.obs;
   RxBool listeningStarted = false.obs;
   RxString lastWords = ''.obs;
+  bool controllerRemoved = false;
+
 
   void startListening() async {
-    speechEnabled.value = await _speechToText.initialize();
+    controllerRemoved = (false);
+    speechEnabled.value = await _speechToText.initialize(
+      onError: (errorNotification) => stopListening(),
+      onStatus: (status) {
+        AppHelper.customPrint(status);
+      },
+    );
     lastWords('');
     if (speechEnabled.value) {
-      // final options = SpeechListenOptions(
-      //   listenMode: ListenMode.confirmation,
-      //   // cancelOnError: true,
-      //   partialResults: true,
-      //   autoPunctuation: true,
-      //   enableHapticFeedback: true,
-      // );
+      final options = SpeechListenOptions(
+        cancelOnError: true,
+        partialResults: true,
+        autoPunctuation: true,
+        enableHapticFeedback: true,
+        listenMode: ListenMode.deviceDefault,
+      );
+
       listeningStarted(true);
       await _speechToText.listen(
-        listenOptions:
-            SpeechListenOptions(sampleRate: 1, autoPunctuation: false),
+        listenOptions: options,
         onResult: _onSpeechResult,
+        listenFor: Duration(seconds: 10),
+        onSoundLevelChange: (level) async {
+          if (level < 0) {
+            await Future.delayed(
+              Duration(seconds: 3),
+              () async{
+                if (level < 0 && lastWords.value.isEmpty) await stopListening();
+              },
+            );
+          }
+        },
       );
 
       AppHelper.customPrint('start listening...');
     } else {
-      Get.snackbar('Error', 'No permission found for record sound');
+      Get.snackbar('Error', 'Can\'t record sound');
     }
   }
 
   Future stopListening() async {
     await _speechToText.stop();
-    await Future.delayed(Duration(seconds: 2));
     listeningStarted(false);
+    if(!controllerRemoved){
+      controllerRemoved = true;
+      Get.delete<RecordVoiceController>();
+      Get.back(result: lastWords.value);
+    }
   }
 
   void _onSpeechResult(SpeechRecognitionResult result) async {
     lastWords.value = result.recognizedWords;
+    AppHelper.customPrint('last words $lastWords');
     if (result.finalResult) {
       await stopListening();
-      Get.delete<RecordVoiceController>();
-      Get.back(result: lastWords.value);
     }
   }
 
