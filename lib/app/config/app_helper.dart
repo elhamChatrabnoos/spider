@@ -2,9 +2,9 @@ import 'package:logger/logger.dart';
 
 class AppHelper{
 
-  static Logger log = Logger();
 
   static customPrint(String message){
+    Logger log = Logger();
     log.w(message);
   }
 

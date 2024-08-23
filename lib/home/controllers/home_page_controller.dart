@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
+import 'package:get_ip_address/get_ip_address.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:sockettest/app/config/app_helper.dart';
 import 'package:sockettest/app/config/socket_config.dart';
@@ -24,53 +26,24 @@ class HomePageController extends GetxController {
 
   /// listen to socket events
   void socketListeners() async {
+    await _getSystemIp();
     await SocketConfig.connectSocket();
 
     SocketConfig.socket.onConnect((_) {
       isSocketConnect(true);
-      print("Connection established");
+      AppHelper.customPrint("Connection established");
     });
 
     SocketConfig.socket.on('backData', (data) {
-      print(data);
+      AppHelper.customPrint(data);
       receivedMessage1.add(data['data']);
     });
 
     SocketConfig.socket.on('backData2', (data) {
       receivedMessage1.add(data['data']);
-      print(data);
+      AppHelper.customPrint(data);
     });
 
-    SocketConfig.socket.onDisconnect((_) {
-      isSocketConnect(false);
-      print("connection Disconnect");
-    });
-
-    SocketConfig.socket.onError((err) {
-      errorMsg('Error occur when connect to socket: $err');
-      print('on error $err');
-    });
-  }
-
-  /// history dialog list
-  void getHistoryList() {
-    SocketConfig.socket.emit('get');
-    SocketConfig.socket.on('history', (data) {
-      List receivedList = data['data'];
-      historyList(receivedList);
-      print(historyList.length);
-    });
-  }
-
-  @override
-  onInit() {
-    initTts();
-    super.onInit();
-  }
-
-  /// send voice and set response
-  void sendVoiceToServer(String targetText) {
-    SocketConfig.socket.emit('message', {'data': targetText});
     SocketConfig.socket.on(
       'answer',
       (data) {
@@ -81,6 +54,53 @@ class HomePageController extends GetxController {
         speak(data['message']);
       },
     );
+
+    SocketConfig.socket.onDisconnect((_) {
+      isSocketConnect(false);
+      AppHelper.customPrint("connection Disconnect");
+    });
+
+    SocketConfig.socket.onError((err) {
+      errorMsg('Error occur when connect to socket: $err');
+      AppHelper.customPrint('on error $err');
+    });
+  }
+
+  String ipAddress = '';
+
+  Future<void> _getSystemIp() async {
+    final info = NetworkInfo();
+    ipAddress = await info.getWifiIP() ?? '';
+    AppHelper.customPrint('Ip address : $ipAddress');
+  }
+
+  /// history dialog list
+  void getHistoryList() {
+    SocketConfig.socket.emit('get');
+    SocketConfig.socket.on('history', (data) {
+      List receivedList = data['data'];
+      historyList(receivedList);
+      AppHelper.customPrint(historyList.length.toString());
+    });
+  }
+
+  @override
+  onInit() {
+    initTts();
+    socketListeners();
+    super.onInit();
+  }
+
+  /// send voice and set response
+  void sendVoiceToServer(String targetText) {
+    SocketConfig.socket.emit(
+      'message',
+      {
+        'data': targetText,
+        'ipAddress': ipAddress,
+      },
+    );
+    AppHelper.customPrint('emit $targetText');
   }
 
   /// change response to speech

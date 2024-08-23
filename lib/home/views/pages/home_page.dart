@@ -15,7 +15,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.socketListeners();
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.grey,
@@ -29,7 +28,6 @@ class HomePage extends StatelessWidget {
           ).then(
             (value) {
               if (value != null) {
-                AppHelper.log.w('value after close dialog : $value');
                 controller.sendVoiceToServer(value);
               }
             },

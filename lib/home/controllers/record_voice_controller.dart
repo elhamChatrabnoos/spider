@@ -28,14 +28,9 @@ class RecordVoiceController extends GetxController {
       // );
       listeningStarted(true);
       await _speechToText.listen(
-        listenOptions: SpeechListenOptions(
-          sampleRate: 1,
-          autoPunctuation: false
-        ),
+        listenOptions:
+            SpeechListenOptions(sampleRate: 1, autoPunctuation: false),
         onResult: _onSpeechResult,
-        onSoundLevelChange: (level) {
-          // AppHelper.customPrint('level volume ${level.toString()}');
-        },
       );
 
       AppHelper.customPrint('start listening...');
@@ -44,16 +39,15 @@ class RecordVoiceController extends GetxController {
     }
   }
 
-
   Future stopListening() async {
     await _speechToText.stop();
     await Future.delayed(Duration(seconds: 2));
     listeningStarted(false);
   }
 
-  void _onSpeechResult(SpeechRecognitionResult result) async{
+  void _onSpeechResult(SpeechRecognitionResult result) async {
     lastWords.value = result.recognizedWords;
-    if(result.finalResult){
+    if (result.finalResult) {
       await stopListening();
       Get.delete<RecordVoiceController>();
       Get.back(result: lastWords.value);
