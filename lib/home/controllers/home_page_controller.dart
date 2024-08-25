@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:get_ip_address/get_ip_address.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:sockettest/app/config/app_helper.dart';
 import 'package:sockettest/app/config/socket_config.dart';
@@ -14,34 +17,37 @@ class HomePageController extends GetxController {
   RxString errorMsg = ''.obs;
   RxList<dynamic> historyList = RxList([]);
   RxBool isSocketConnect = false.obs;
+  MethodChannel _channel = const MethodChannel('get_mac');
+  late Socket socket;
+  String ipAddress = '';
 
   Future<void> reconnectSocket() async {
     errorMsg('');
     receivedMessage1.clear();
-    SocketConfig.socket.disconnect();
-    SocketConfig.socket.dispose();
+    socket.disconnect();
+    socket.dispose();
     socketListeners();
   }
 
   /// listen to socket events
   void socketListeners() async {
     await _getSystemIp();
-    await SocketConfig.connectSocket();
+    await connectSocket();
 
-    SocketConfig.socket.onConnect((_) {
+    socket.onConnect((_) {
       isSocketConnect(true);
       AppHelper.customPrint("Connection established");
     });
 
-    SocketConfig.socket.on('backData', (data) {
+    socket.on('backData', (data) {
       receivedMessage1.add(data['data']);
     });
 
-    SocketConfig.socket.on('backData2', (data) {
+    socket.on('backData2', (data) {
       receivedMessage1.add(data['data']);
     });
 
-    SocketConfig.socket.on(
+    socket.on(
       'answer',
       (data) {
         AppHelper.customPrint('data: ${data['data']}');
@@ -52,29 +58,53 @@ class HomePageController extends GetxController {
       },
     );
 
-    SocketConfig.socket.onDisconnect((_) {
+    socket.onDisconnect((_) {
       isSocketConnect(false);
       AppHelper.customPrint("connection Disconnect");
     });
 
-    SocketConfig.socket.onError((err) {
+    socket.onError((err) {
       errorMsg('Error occur when connect to socket: $err');
       AppHelper.customPrint('on error $err');
     });
   }
 
-  String ipAddress = '';
+  Future<void> connectSocket() async {
+    AppHelper.customPrint('try to connect...');
+
+    socket = io(
+        'https://test.spider-cryptobot.site',
+        OptionBuilder()
+            .setTransports(['websocket'])
+            .disableAutoConnect()
+            .setExtraHeaders({
+              'MACAddress': ipAddress,
+            }) // optional
+            .build());
+    socket.connect();
+  }
 
   Future<void> _getSystemIp() async {
-    var ipAddress = IpAddress(type: RequestType.json);
-    dynamic data = await ipAddress.getIpAddress();
-    AppHelper.customPrint('Ip address : ${data['ip']}');
+    // final info = NetworkInfo();
+    // ipAddress = await info.getWifiIP() ?? '';
+
+    // var ipAddress = IpAddress(type: RequestType.json);
+    // dynamic data = await ipAddress.getIpAddress();
+    // AppHelper.customPrint('Ip address : ${data['ip']}');
+    // final String macID = await _channel.invokeMethod('getMacAddress');
+    final deviceInfoPlugin = DeviceInfoPlugin();
+    // AndroidDeviceInfo androidInfo = await deviceInfoPlugin.androidInfo;
+    final deviceInfo = await deviceInfoPlugin.deviceInfo;
+    ipAddress = deviceInfo.data['version']['incremental'];
+
+    AppHelper.customPrint('deviceInfo data : ${deviceInfo.data}');
+    AppHelper.customPrint('deviceInfo : ${deviceInfo.data['version']['incremental']}');
   }
 
   /// history dialog list
   void getHistoryList() {
-    SocketConfig.socket.emit('get');
-    SocketConfig.socket.on('history', (data) {
+    socket.emit('get');
+    socket.on('history', (data) {
       List receivedList = data['data'];
       historyList(receivedList);
       AppHelper.customPrint(historyList.length.toString());
@@ -90,7 +120,7 @@ class HomePageController extends GetxController {
 
   /// send voice and set response
   void sendVoiceToServer(String targetText) {
-    SocketConfig.socket.emit(
+    socket.emit(
       'message',
       {
         'data': targetText,
