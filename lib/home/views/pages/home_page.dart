@@ -1,5 +1,9 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sockettest/app/config/app_assets.dart';
+import 'package:sockettest/app/config/app_colors.dart';
 import 'package:sockettest/app/config/app_helper.dart';
 import 'package:sockettest/home/views/widgets/main_list_widget.dart';
 import 'package:sockettest/home/views/widgets/record_sound_diaolog.dart';
@@ -17,7 +21,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.grey,
+        backgroundColor: AppColors.secondary.withOpacity(0.8),
         onPressed: () {
           showDialog(
             barrierDismissible: false,
@@ -42,20 +46,20 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.white.withOpacity(0.4),
         title: Row(
           children: [
-            Text(
-              'Spider',
-              style: TextStyle(
-                fontSize: 24,
-                color: Colors.amber.withOpacity(0.5),
-                fontWeight: FontWeight.w600,
-              ),
+            Column(
+              children: [
+                Opacity(
+                    opacity: 0.8,
+                    child: Image.asset(AppAssets.whiteLogo, width: 30, height: 30,)),
+                SizedBox(height: 3),
+              ],
             ),
             const Spacer(),
             Obx(() {
               return Text(
                 controller.isSocketConnect.value ? 'Connect' : 'Disconnect',
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 20,
                   color: controller.isSocketConnect.value
                       ? Colors.green
                       : Colors.redAccent,
@@ -70,39 +74,42 @@ class HomePage extends StatelessWidget {
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () => controller.reconnectSocket(),
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: SizedBox(
-                height: MediaQuery.sizeOf(context).height,
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    const SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: CustomText(
-                        onClickText: () {
-                          showModalBottomSheet(
-                            backgroundColor: Colors.grey,
-                            context: context,
-                            builder: (context) {
-                              return const HistoryDialog();
-                            },
-                          );
-                        },
-                        text: 'show history',
-                        fontColor: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Image.asset(AppAssets.whiteLogo, opacity: AlwaysStoppedAnimation(.1)),
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: SizedBox(
+                  height: MediaQuery.sizeOf(context).height,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: CustomText(
+                          onClickText: () {
+                            showModalBottomSheet(
+                              backgroundColor: Color(0xFF383838),
+                              context: context,
+                              builder: (context) {
+                                return const HistoryDialog();
+                              },
+                            );
+                          },
+                          text: 'show history',
+                          fontColor: Colors.white.withOpacity(0.5),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    Expanded(child: MainListWidget()),
-                  ],
+                      const SizedBox(height: 20),
+                      Expanded(child: MainListWidget()),
+                    ],
+                  ),
                 ),
-              ),
-            ),
+              )],
           ),
         ),
       ),

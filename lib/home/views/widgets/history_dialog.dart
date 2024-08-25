@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,25 +15,29 @@ class HistoryDialog extends GetView<HomePageController> {
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Row(
-            children: [
-              const CustomText(
-                text: 'History',
-                fontSize: 25,
-              ),
-              const Spacer(),
-              Align(
-                alignment: Alignment.centerRight,
-                child: InkWell(
-                  onTap: () => Get.back(),
-                  child: const Icon(
-                    Icons.close,
-                    color: Colors.red,
-                    size: 30,
-                  ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                const CustomText(
+                  text: 'History',
+                  fontSize: 25,
+                  fontColor: Colors.white,
                 ),
-              ),
-            ],
+                // const Spacer(),
+                // Align(
+                //   alignment: Alignment.centerRight,
+                //   child: InkWell(
+                //     onTap: () => Get.back(),
+                //     child: const Icon(
+                //       Icons.dangerous_outlined,
+                //       color: Colors.red,
+                //       size: 30,
+                //     ),
+                //   ),
+                // ),
+              ],
+            ),
           ),
           const SizedBox(height: 20),
           Obx(() {
@@ -44,16 +47,16 @@ class HistoryDialog extends GetView<HomePageController> {
                 itemCount: controller.historyList.length,
                 itemBuilder: (context, index) {
                   return Container(
-                    // padding: EdgeInsets.all(10),
                     margin: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.5),
+                      color: Colors.white.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: CustomText(
                       overflow: TextOverflow.clip,
                       text: controller.historyList[index],
                       padding: 10,
+                      fontColor: Colors.white,
                     ),
                   );
                 },

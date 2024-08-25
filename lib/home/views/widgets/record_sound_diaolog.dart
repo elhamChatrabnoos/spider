@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sockettest/app/config/app_assets.dart';
 import 'package:sockettest/home/controllers/record_voice_controller.dart';
 import 'package:sockettest/home/views/widgets/custom_text.dart';
+
+import '../../../app/config/app_colors.dart';
 
 class RecordSoundDialog extends StatelessWidget {
   RecordSoundDialog({super.key});
@@ -11,51 +14,42 @@ class RecordSoundDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Colors.transparent,
       titleTextStyle: TextStyle(fontSize: 18, color: Colors.black),
-      title: Obx(() {
-        return CustomText(
-          text: controller.listeningStarted.value
-              ? 'Voice is recording...'
-              : 'Tap to start recording',
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.clip,
-        );
-      }),
       contentPadding: EdgeInsets.all(20),
       content: InkWell(
         splashColor: Colors.transparent,
         onTap: () {
           controller.startListening();
         },
-        child: Obx(() {
-          return SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: controller.listeningStarted.value
-                        ? Colors.amber.withOpacity(0.1)
-                        : Colors.grey.withOpacity(0.2),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.mic,
-                    color: Colors.amber,
-                    size: 50,
-                  ),
-                ),
-                SizedBox(height: 10),
-                CustomText(
-                  text: controller.lastWords.value,
-                  overflow: TextOverflow.clip,
-                )
-              ],
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding:
+                  EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 40),
+              decoration: BoxDecoration(
+                  color: AppColors.onPrimary.withOpacity(0.6),
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary,
+                      spreadRadius: 12,
+                      blurRadius: 16,
+                      offset: const Offset(1, 1),
+                    ),
+                  ]),
+              child: Image.asset(
+                AppAssets.blackLogo,
+                color: Colors.black,
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+              ),
             ),
-          );
-        }),
+            // SizedBox(height: 10),
+          ],
+        ),
       ),
     );
   }
