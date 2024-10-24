@@ -8,16 +8,16 @@ import '../../controllers/home_page_controller.dart';
 import '../widgets/custom_text.dart';
 import '../widgets/history_dialog.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends GetView<HomePageController> {
   HomePage({super.key});
-
-  final controller = Get.put(HomePageController());
 
   @override
   Widget build(BuildContext context) {
+    Get.lazyPut(() => HomePageController());
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
+        backgroundColor:
+            Theme.of(context).colorScheme.secondary.withOpacity(0.8),
         onPressed: () {
           showDialog(
             barrierDismissible: false,
@@ -39,14 +39,18 @@ class HomePage extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
-        backgroundColor: Colors.white.withOpacity(0.4),
+        backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
         title: Row(
           children: [
             Column(
               children: [
                 Opacity(
                     opacity: 0.8,
-                    child: Image.asset(AppAssets.whiteLogo, width: 30, height: 30,)),
+                    child: Image.asset(
+                      AppAssets.whiteLogo,
+                      width: 30,
+                      height: 30,
+                    )),
                 SizedBox(height: 3),
               ],
             ),
@@ -73,7 +77,8 @@ class HomePage extends StatelessWidget {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              Image.asset(AppAssets.whiteLogo, opacity: AlwaysStoppedAnimation(.1)),
+              Image.asset(AppAssets.whiteLogo,
+                  opacity: AlwaysStoppedAnimation(.1)),
               Padding(
                 padding: const EdgeInsets.all(15),
                 child: SizedBox(
@@ -105,7 +110,8 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                 ),
-              )],
+              )
+            ],
           ),
         ),
       ),

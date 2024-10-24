@@ -83,9 +83,6 @@ class HomePageController extends GetxController {
     final deviceInfoPlugin = DeviceInfoPlugin();
     final deviceInfo = await deviceInfoPlugin.deviceInfo;
     ipAddress = deviceInfo.data['version']['incremental'];
-
-    AppHelper.customPrint('deviceInfo data : ${deviceInfo.data}');
-    AppHelper.customPrint('deviceInfo : ${deviceInfo.data['version']['incremental']}');
   }
 
   /// history dialog list

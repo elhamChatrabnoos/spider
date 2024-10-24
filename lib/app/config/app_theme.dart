@@ -105,8 +105,8 @@ class AppTheme {
       /// input style
       inputDecorationTheme: const InputDecorationTheme(
         filled: true,
-        hintStyle: TextStyle(color: onPrimaryContainer),
-        fillColor: tertiary,
+        hintStyle: TextStyle(color: primaryContainer),
+        fillColor: onPrimary,
         contentPadding:
             EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 12),
         enabledBorder: OutlineInputBorder(

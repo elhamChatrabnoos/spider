@@ -44,7 +44,7 @@ class MyBottomTabBarWidget extends StatelessWidget {
               isSelected: currentIndex == 1,
               onTap: ontapNavItem(1),
               title: '',
-              iconData: Icons.event_note,
+              iconData: Icons.account_balance_wallet,
               // assetName: AppAssets.compassIcon,
             ),
           ),
@@ -52,16 +52,16 @@ class MyBottomTabBarWidget extends StatelessWidget {
             child: TabBarItemWidget(
               isSelected: currentIndex == 2,
               onTap: ontapNavItem(2),
-              iconData: Icons.format_list_bulleted,
+              iconData: Icons.account_tree_rounded,
               title: '',
               // assetName: AppAssets.shoppingIcon,
             ),
           ),
-          Expanded(
+          Expanded( 
             child: TabBarItemWidget(
               isSelected: currentIndex == 3,
               onTap: ontapNavItem(3),
-              iconData: Icons.menu_book_rounded,
+              iconData: Icons.person,
               title: '',
               // assetName: AppAssets.chatIcon,
             ),
@@ -128,10 +128,13 @@ class TabBarItemWidget extends StatelessWidget {
             isSelected
                 ? Padding(
                     padding: const EdgeInsets.only(top: 5.0),
-                    child: Icon(
-                      Icons.circle,
-                      size: 8,
-                      color: Theme.of(context).primaryColor,
+                    child: Container(
+                      width: 15,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        borderRadius: BorderRadius.circular(100)
+                      ),
                     ),
                   )
                 : const SizedBox()

@@ -1,40 +1,40 @@
 // import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:sockettest/app/config/app_constants.dart';
+import 'package:sockettest/app/network/dio_config.dart';
 
 import '../widgets/error_dialog.dart';
+
 // import '../network/dio_config.dart';
 import 'app_text.dart';
 
-
 class AppHelper {
   static Logger log = Logger();
-  // static DioConfig dioConfig = DioConfig();
+  static DioConfig dioConfig = DioConfig();
 
-  // static var localDbInfo;
-  //
-  // static Future openLocalDb() async {
-  //   localDbInfo = await Hive.openBox(AppConstants.hiveDb);
-  // }
+  static var localDbInfo;
 
-  // static String checkException(DioException error) {
-  //   if (error.type == DioExceptionType.receiveTimeout ||
-  //       error.type == DioExceptionType.connectionTimeout ||
-  //       error.response == null) {
-  //     return AppConstants.someThingWrong;
-  //   } else if (error.response!.statusCode == 500) {
-  //     return AppConstants.someThingWrong;
-  //   } else if (error.response!.data != null && error.response!.data['message'] != null) {
-  //     if (error.response!.data['message'] != null) {
-  //       return error.response!.data['message'];
-  //     }
-  //   }
-  //   AppHelper.log.w('other error');
-  //   return AppConstants.someThingWrong;
-  // }
+  static Future openLocalDb() async {
+    localDbInfo = await Hive.openBox(AppConstants.hiveDb);
+  }
 
-  static customPrint(dynamic message){
+  static String checkException(DioException error) {
+    if (error.type == DioExceptionType.receiveTimeout ||
+        error.type == DioExceptionType.connectionTimeout ||
+        error.response == null) {
+      return AppConstants.someThingWrong;
+    } else if (error.response!.statusCode == 500) {
+      return AppConstants.someThingWrong;
+    }
+    return AppConstants.someThingWrong;
+  }
+
+  static customPrint(dynamic message) {
     Logger log = Logger();
     log.w(message.toString());
   }
@@ -124,16 +124,15 @@ class AppHelper {
     DateTime localDateTime = utcDateTime.toLocal();
     String hour = localDateTime.hour.toString();
     String minute = localDateTime.minute.toString();
-    if(hour.length == 1){
+    if (hour.length == 1) {
       hour = '0$hour';
     }
-    if(minute.length == 1){
+    if (minute.length == 1) {
       minute = '0$minute';
     }
     String formattedLocalTime = '$hour:$minute';
     return formattedLocalTime;
   }
-
 
   static String secureEmail(String email) {
     // Split the email into the local part and the domain part
@@ -151,5 +150,29 @@ class AppHelper {
 
     return '$visiblePart$obfuscatedPart$domain';
   }
+}
 
+class NumberInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    // Remove any previously formatted commas
+    String newText = newValue.text.replaceAll(',', '');
+
+    // Convert the cleaned-up string back to an integer
+    if (newText.isEmpty) {
+      return newValue;
+    }
+
+    // Format the number by adding commas
+    final formattedText = NumberFormat("#,###").format(int.parse(newText));
+
+    // Return the new formatted value, with the proper caret position
+    return TextEditingValue(
+      text: formattedText,
+      selection: TextSelection.collapsed(offset: formattedText.length),
+    );
+  }
 }

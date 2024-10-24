@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sockettest/app/config/app_theme.dart';
-import 'package:sockettest/features/home/views/pages/home_page.dart';
+import 'package:sockettest/features/main/bindings/main_page_binding.dart';
+import 'package:sockettest/features/main/views/pages/main_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,9 +14,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      initialBinding: MainPageBinding(),
       debugShowCheckedModeBanner: false,
       theme: AppTheme.appThemeLight(),
-      home: HomePage(),
+      home: MainPage(),
     );
   }
 }

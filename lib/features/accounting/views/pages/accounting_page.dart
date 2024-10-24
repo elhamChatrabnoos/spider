@@ -10,7 +10,7 @@ class AccountingPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Accounting'),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -21,15 +21,13 @@ class AccountingPage extends StatelessWidget {
           );
         },
       ),
-      body: SafeArea(
-        child: ListView.builder(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          itemCount: 10,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return AccountingItem();
-          },
-        ),
+      body: ListView.builder(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        itemCount: 10,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return AccountingItem();
+        },
       ),
     );
   }

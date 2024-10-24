@@ -151,7 +151,7 @@ class CustomTextField extends StatelessWidget {
       ),
       border: InputBorder.none,
       filled: true,
-      fillColor: fillColor ?? Theme.of(context).scaffoldBackgroundColor,
+      fillColor: fillColor,
       suffixIcon: suffixIcon ??
           InkWell(onTap: onTapIcon, child: icon ?? const SizedBox()),
       errorStyle: const TextStyle(color: Colors.red),
