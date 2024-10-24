@@ -3,21 +3,16 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
-import 'package:get_ip_address/get_ip_address.dart';
-import 'package:network_info_plus/network_info_plus.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:sockettest/app/config/app_helper.dart';
-import 'package:sockettest/app/config/socket_config.dart';
 
 class HomePageController extends GetxController {
   RxList<String> receivedMessage1 = RxList([]);
   RxString errorMsg = ''.obs;
   RxList<dynamic> historyList = RxList([]);
   RxBool isSocketConnect = false.obs;
-  MethodChannel _channel = const MethodChannel('get_mac');
   late Socket socket;
   String ipAddress = '';
 
@@ -85,15 +80,7 @@ class HomePageController extends GetxController {
   }
 
   Future<void> _getSystemIp() async {
-    // final info = NetworkInfo();
-    // ipAddress = await info.getWifiIP() ?? '';
-
-    // var ipAddress = IpAddress(type: RequestType.json);
-    // dynamic data = await ipAddress.getIpAddress();
-    // AppHelper.customPrint('Ip address : ${data['ip']}');
-    // final String macID = await _channel.invokeMethod('getMacAddress');
     final deviceInfoPlugin = DeviceInfoPlugin();
-    // AndroidDeviceInfo androidInfo = await deviceInfoPlugin.androidInfo;
     final deviceInfo = await deviceInfoPlugin.deviceInfo;
     ipAddress = deviceInfo.data['version']['incremental'];
 

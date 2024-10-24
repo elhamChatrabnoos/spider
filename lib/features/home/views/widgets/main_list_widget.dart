@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sockettest/home/controllers/home_page_controller.dart';
-
-import '../../../app/config/app_colors.dart';
+import 'package:sockettest/features/home/controllers/home_page_controller.dart';
 
 class MainListWidget extends GetView<HomePageController> {
   const MainListWidget({super.key});
@@ -17,7 +15,7 @@ class MainListWidget extends GetView<HomePageController> {
             child: ListView(
               shrinkWrap: true,
               children: controller.receivedMessage1.reversed.map(
-                    (element) {
+                (element) {
                   return Container(
                     padding: const EdgeInsets.all(10),
                     margin: const EdgeInsets.all(10),
@@ -26,7 +24,10 @@ class MainListWidget extends GetView<HomePageController> {
                       borderRadius: BorderRadius.circular(5),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.primary.withOpacity(0.2),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withOpacity(0.2),
                           spreadRadius: 5,
                           blurRadius: 12,
                           offset: const Offset(2, 2),
@@ -35,7 +36,11 @@ class MainListWidget extends GetView<HomePageController> {
                     ),
                     child: Row(
                       children: [
-                          Icon(Icons.receipt_rounded, color: Colors.white.withOpacity(0.5), size: 30,),
+                        Icon(
+                          Icons.receipt_rounded,
+                          color: Colors.white.withOpacity(0.5),
+                          size: 30,
+                        ),
                         SizedBox(width: 20),
                         Expanded(
                           child: Text(

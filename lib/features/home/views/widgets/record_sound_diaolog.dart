@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sockettest/app/config/app_assets.dart';
-import 'package:sockettest/home/controllers/record_voice_controller.dart';
-import 'package:sockettest/home/views/widgets/custom_text.dart';
-
-import '../../../app/config/app_colors.dart';
+import 'package:sockettest/features/home/controllers/record_voice_controller.dart';
 
 class RecordSoundDialog extends StatelessWidget {
   RecordSoundDialog({super.key});
@@ -29,11 +26,11 @@ class RecordSoundDialog extends StatelessWidget {
               padding:
                   EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 40),
               decoration: BoxDecoration(
-                  color: AppColors.onPrimary.withOpacity(0.6),
+                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.6),
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary,
+                      color: Theme.of(context).colorScheme.primary,
                       spreadRadius: 12,
                       blurRadius: 16,
                       offset: const Offset(1, 1),
@@ -47,7 +44,6 @@ class RecordSoundDialog extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            // SizedBox(height: 10),
           ],
         ),
       ),

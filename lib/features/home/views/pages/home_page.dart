@@ -1,12 +1,8 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sockettest/app/config/app_assets.dart';
-import 'package:sockettest/app/config/app_colors.dart';
-import 'package:sockettest/app/config/app_helper.dart';
-import 'package:sockettest/home/views/widgets/main_list_widget.dart';
-import 'package:sockettest/home/views/widgets/record_sound_diaolog.dart';
+import 'package:sockettest/features/home/views/widgets/main_list_widget.dart';
+import 'package:sockettest/features/home/views/widgets/record_sound_diaolog.dart';
 
 import '../../controllers/home_page_controller.dart';
 import '../widgets/custom_text.dart';
@@ -21,7 +17,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.secondary.withOpacity(0.8),
+        backgroundColor: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
         onPressed: () {
           showDialog(
             barrierDismissible: false,
