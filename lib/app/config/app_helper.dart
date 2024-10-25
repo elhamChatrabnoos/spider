@@ -1,4 +1,3 @@
-// import 'package:dio/dio.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,7 +27,11 @@ class AppHelper {
         error.type == DioExceptionType.connectionTimeout ||
         error.response == null) {
       return AppConstants.someThingWrong;
-    } else if (error.response!.statusCode == 500) {
+    }
+    else if (error.response!.data['error'] != null) {
+      return error.response!.data['error'];
+    }
+    else if (error.response!.statusCode == 500) {
       return AppConstants.someThingWrong;
     }
     return AppConstants.someThingWrong;

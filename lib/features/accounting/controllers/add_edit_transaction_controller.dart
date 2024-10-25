@@ -41,7 +41,7 @@ class AddEditTransactionDialogController extends GetxController {
     Transaction transaction = Transaction(
       account: selectedAccountName,
       type: selectedStatus?.toLowerCase() == 'withdraw' ? 0 : 1,
-      amount: int.tryParse(amountController.text),
+      amount: int.tryParse(amountController.text.replaceAll(',', '')),
       transActionCause: descriptionController.text,
     );
 

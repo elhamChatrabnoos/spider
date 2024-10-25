@@ -10,6 +10,7 @@ class MainListWidget extends GetView<HomePageController> {
     return Obx(() {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
             child: ListView(
@@ -35,6 +36,8 @@ class MainListWidget extends GetView<HomePageController> {
                       ],
                     ),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Icon(
                           Icons.receipt_rounded,

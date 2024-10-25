@@ -25,12 +25,14 @@ class AccountingRepository {
     required Transaction transaction,
   }) async {
     try {
+      AppHelper.customPrint(transaction.amount);
+
       var response;
       if (transaction.type == 0) {
         response = await AppHelper.dioConfig.dio.put(
           '${ApiAddresses.withDraw}/${transaction.account}',
           data: {
-            "amount": transaction.amount,
+            "amount": int.tryParse(transaction.amount.toString().replaceAll(',', '')),
             "cause": transaction.transActionCause,
           },
         );
@@ -38,7 +40,7 @@ class AccountingRepository {
         response = await AppHelper.dioConfig.dio.put(
           '${ApiAddresses.deposit}/${transaction.account}',
           data: {
-            "amount": transaction.amount,
+            "amount": int.tryParse(transaction.amount.toString().replaceAll(',', '')),
             "cause": transaction.transActionCause,
           },
         );
