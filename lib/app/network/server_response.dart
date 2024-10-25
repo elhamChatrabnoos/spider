@@ -14,22 +14,10 @@ class ServerResponse {
   }
 
   bool? success;
-  String? data;
+  dynamic data;
   String? error;
   String? scope;
 
-  ServerResponse copyWith({
-    bool? success,
-    String? data,
-    String? error,
-    String? scope,
-  }) =>
-      ServerResponse(
-        success: success ?? this.success,
-        data: data ?? this.data,
-        error: error ?? this.error,
-        scope: scope ?? this.scope,
-      );
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

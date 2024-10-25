@@ -1,56 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sockettest/features/accounting/models/get_transactions_response.dart';
 
 class AccountingItem extends StatelessWidget {
-  const AccountingItem({super.key});
+  const AccountingItem({super.key, required this.transaction});
+
+  final Transaction transaction;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      margin: EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(5),
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).primaryColor.withOpacity(0.2),
-            spreadRadius: 5,
-            blurRadius: 12,
-            offset: const Offset(2, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 3,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildRow(context, 'Account', 'Elham'),
-                _buildRow(context, 'Cost', '2000'),
-                _buildRow(context, 'Account Balance',
-                    NumberFormat('#,##0', 'en_US').format(2000000).toString()),
-                _buildRow(context, 'Reason', 'buy clothes'),
-              ],
+    return IntrinsicHeight(
+      child: Container(
+        padding: EdgeInsets.all(10),
+        margin: EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(5),
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).primaryColor.withOpacity(0.2),
+              spreadRadius: 5,
+              blurRadius: 12,
+              offset: const Offset(2, 2),
             ),
-          ),
-          Expanded(
-            child: Column(
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.account_balance_wallet_outlined,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+            SizedBox(width: 10),
+            Expanded(
+              flex: 3,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildRow(context, 'Account Name ', transaction.account),
+                  SizedBox(height: 10),
+                  _buildRow(
+                    context,
+                    'Amount',
+                    NumberFormat('#,##0', 'en_US')
+                        .format(transaction.amount)
+                        .toString(),
+                  ),
+                  SizedBox(height: 10),
+                  _buildRow(context, 'Reason', transaction.transActionCause),
+                ],
+              ),
+            ),
+            Column(
               crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisSize: MainAxisSize.max,
               children: [
                 Text(
-                  'Pick',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(color: Colors.green),
+                  transaction.type == 1 ? 'Deposit' : 'Withdraw',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: transaction.type == 1 ? Colors.green : Colors.red),
                 ),
+                Spacer(),
                 Text(
-                  '02-05-2024',
+                  transaction.time ?? '',
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall
@@ -58,16 +70,16 @@ class AccountingItem extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildRow(BuildContext context, title, value) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text('$title: ', style: Theme.of(context).textTheme.titleSmall),
         SizedBox(width: 5),
