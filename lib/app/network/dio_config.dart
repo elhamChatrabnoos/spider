@@ -1,5 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:sockettest/features/login/views/pages/login_page.dart';
 
 import '../config/local_db.dart';
 import 'api_addresses.dart';
@@ -31,25 +34,26 @@ class DioConfig {
             if (e.response == null) {
               return handler.next(e);
             }
-            if (e.response!.statusCode == 401 &&
-                e.requestOptions.path != ApiAddresses.verifyOtp) {
-              if (e.requestOptions.path == ApiAddresses.refreshToken) {
+            if (e.response!.statusCode == 401 /*&&
+                e.requestOptions.path != ApiAddresses.verifyOtp*/) {
+              // if (e.requestOptions.path == ApiAddresses.refreshToken) {
                 await LocalDb.deleteAccessToken();
                 await LocalDb.deleteRefreshToken();
-                return;
-              } else if (e.requestOptions.path == ApiAddresses.login) {
+                Get.offAll(LoginPage());
+              // }
+              /*else if (e.requestOptions.path == ApiAddresses.login) {
                 return handler.next(e);
               } else {
                 await _resendLastRequest(e, handler);
                 return;
-              }
+              }*/
             }
 
             return handler.next(e);
           },
           onResponse: (response, handler) => handler.next(response)),
     );
-    _dio.interceptors.add(PrettyDioLogger(requestHeader: true));
+    _dio.interceptors.add(PrettyDioLogger(requestHeader: true, requestBody: true));
   }
 
   _resendLastRequest(DioException e, ErrorInterceptorHandler handler) async {

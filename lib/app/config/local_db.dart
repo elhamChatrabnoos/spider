@@ -4,7 +4,7 @@ import 'app_helper.dart';
 
 class LocalDb {
 
-  static Future saveAccessToken(String token) async{
+  static Future saveAccessToken(String? token) async{
     AppHelper.localDbInfo.put(AppConstants.userAccessTokenKey, token);
   }
 

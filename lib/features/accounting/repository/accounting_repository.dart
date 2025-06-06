@@ -4,7 +4,6 @@ import 'package:sockettest/app/network/api_addresses.dart';
 import 'package:sockettest/app/network/response_status.dart';
 import 'package:sockettest/app/network/server_response.dart';
 import 'package:sockettest/features/accounting/models/get_transactions_response.dart';
-import 'package:sockettest/features/accounts/models/get_account_response.dart';
 
 class AccountingRepository {
   /// get all transaction

@@ -97,8 +97,8 @@ class HomePageController extends GetxController {
 
   @override
   onInit() {
-    initTts();
-    socketListeners();
+    // initTts();
+    // socketListeners();
     super.onInit();
   }
 
