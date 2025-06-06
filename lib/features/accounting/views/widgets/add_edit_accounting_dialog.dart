@@ -74,72 +74,71 @@ class AddEditAccountingDialog extends StatelessWidget {
                   Text('Reason: '),
                   SizedBox(height: 10),
                   GetBuilder<AddEditTransactionDialogController>(
-                      id: controller.getReasonsUpdateKey,
-                      builder: (logic) {
-                        return Autocomplete<Reason>(
-                          fieldViewBuilder: (context, textEditingController,
-                              focusNode, onFieldSubmitted) {
-                            controller.descriptionController =
-                                textEditingController;
-                            return CustomTextField(
-                              focusNode: focusNode,
-                              checkValidation: (value) =>
-                                  AppHelper.checkValidation(value ?? ''),
-                              controller: textEditingController,
-                              hintText: 'Enter reason',
-                              enableBorder: false,
-                              fillColor:
-                                  Theme.of(context).colorScheme.onPrimary,
-                              textColor:
-                                  Theme.of(context).colorScheme.tertiary,
-                            );
-                          },
-                          optionsMaxHeight:
-                              MediaQuery.sizeOf(context).height / 3,
-                          optionsViewBuilder: (context, onSelected, options) {
-                            if (logic.getReasonsStatus.status ==
-                                Status.success)
-                              return Align(
-                                alignment: Alignment.topLeft,
-                                child: Container(
-                                  padding: EdgeInsets.all(10),
-                                  width:
-                                      MediaQuery.sizeOf(context).width / 1.5,
-                                  height:
-                                      MediaQuery.sizeOf(context).height / 10,
-                                  decoration:
-                                      BoxDecoration(color: Colors.grey),
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      spacing: 10,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: options
-                                          .map(
-                                            (e) => InkWell(
-                                              onTap: () => onSelected(e),
-                                              child: Text(e.causes ?? ''),
-                                            ),
-                                          )
-                                          .toList(),
-                                    ),
+                    id: controller.getReasonsUpdateKey,
+                    builder: (logic) {
+                      return Autocomplete<Reason>(
+                        fieldViewBuilder: (context, textEditingController,
+                            focusNode, onFieldSubmitted) {
+                          controller.descriptionController =
+                              textEditingController;
+                          return CustomTextField(
+                            focusNode: focusNode,
+                            checkValidation: (value) =>
+                                AppHelper.checkValidation(value ?? ''),
+                            controller: textEditingController,
+                            hintText: 'Enter reason',
+                            enableBorder: false,
+                            fillColor: Theme.of(context).colorScheme.onPrimary,
+                            textColor: Theme.of(context).colorScheme.tertiary,
+                          );
+                        },
+                        optionsMaxHeight: MediaQuery.sizeOf(context).height / 3,
+                        optionsViewBuilder: (context, onSelected, options) {
+                          if (logic.getReasonsStatus.status == Status.success)
+                            return Align(
+                              alignment: Alignment.topLeft,
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                width: MediaQuery.sizeOf(context).width / 1.5,
+                                height: MediaQuery.sizeOf(context).height / 10,
+                                decoration: BoxDecoration(color: Colors.grey),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    spacing: 10,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: options
+                                        .map(
+                                          (e) => InkWell(
+                                            onTap: () {
+                                              onSelected(e);
+                                              controller.descriptionController
+                                                  .text = e.causes ?? '';
+                                              FocusScope.of(context)
+                                                  .requestFocus(FocusNode());
+                                            },
+                                            child: Text(e.causes ?? ''),
+                                          ),
+                                        )
+                                        .toList(),
                                   ),
                                 ),
-                              );
-                            return SizedBox();
-                          },
-                          optionsBuilder: (textEditingValue) {
-                            if (logic.reasonsList.isEmpty) {
-                              return [];
-                            }
-                            return logic.reasonsList.where((element) =>
-                                element.causes!.contains(
-                                    textEditingValue.text.toLowerCase()));
-                          },
-                        );
-                      }),
+                              ),
+                            );
+                          return SizedBox();
+                        },
+                        optionsBuilder: (textEditingValue) {
+                          if (logic.reasonsList.isEmpty) {
+                            return [];
+                          }
+                          return logic.reasonsList.where((element) => element
+                              .causes!
+                              .contains(textEditingValue.text.toLowerCase()));
+                        },
+                      );
+                    },
+                  ),
                 ],
               ),
               SizedBox(height: 20),
