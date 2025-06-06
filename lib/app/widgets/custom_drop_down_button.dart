@@ -53,10 +53,21 @@ class CustomDropDownButton extends StatelessWidget {
                   ),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
+                      selectedItemBuilder: (BuildContext context) {
+                        return targetList.map<Widget>((String item) {
+                          return Text(
+                            textAlign: TextAlign.center,
+                            item,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.tertiary, // Change color here
+                            ),
+                          );
+                        }).toList();
+                      },
                       dropdownColor:
                           Theme.of(context).colorScheme.primaryContainer,
                       menuMaxHeight: 200,
-                      padding: const EdgeInsets.only(left: 15, right: 10),
+                      padding: const EdgeInsets.only(left: 15, right: 10, bottom: 10, top: 10),
                       borderRadius: BorderRadius.circular(12),
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: Theme.of(context).colorScheme.tertiary,
@@ -65,18 +76,19 @@ class CustomDropDownButton extends StatelessWidget {
                       hint: Text(
                         'Select',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
+                              color: Theme.of(context).colorScheme.primaryContainer,
                             ),
                       ),
                       icon: Icon(
                         Icons.keyboard_arrow_down_rounded,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).colorScheme.primaryContainer,
                         size: 30,
                       ),
+
                       items: targetList.map((String style) {
                         return DropdownMenuItem<String>(
                           value: style,
-                          child: Text(style),
+                          child: Text(style, style: Theme.of(context).textTheme.bodyMedium),
                         );
                       }).toList(),
                       onChanged: (value) {

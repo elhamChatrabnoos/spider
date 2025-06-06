@@ -121,7 +121,7 @@ class TabBarItemWidget extends StatelessWidget {
                   : Icon(
                       iconData,
                       color: isSelected
-                          ? Theme.of(context).colorScheme.onPrimary
+                          ? Theme.of(context).colorScheme.primary
                           : const Color(0xFFBDBDBD),
                     ),
             ),

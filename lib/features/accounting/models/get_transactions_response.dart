@@ -1,125 +1,138 @@
+import 'dart:convert';
+
 class GetTransactionsResponse {
+  bool? success;
+  String? message;
+  Data? data;
+  dynamic error;
+  DateTime? timestamp;
+
   GetTransactionsResponse({
     this.success,
+    this.message,
     this.data,
     this.error,
-    this.scope,
+    this.timestamp,
   });
 
-  GetTransactionsResponse.fromJson(dynamic json) {
-    success = json['success'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
-    error = json['error'];
-    scope = json['scope'];
-  }
+  factory GetTransactionsResponse.fromRawJson(String str) =>
+      GetTransactionsResponse.fromJson(json.decode(str));
 
-  bool? success;
-  Data? data;
-  String? error;
-  String? scope;
-
-  GetTransactionsResponse copyWith({
-    bool? success,
-    Data? data,
-    String? error,
-    String? scope,
-  }) =>
+  factory GetTransactionsResponse.fromJson(Map<String, dynamic> json) =>
       GetTransactionsResponse(
-        success: success ?? this.success,
-        data: data ?? this.data,
-        error: error ?? this.error,
-        scope: scope ?? this.scope,
+        success: json["success"],
+        message: json["message"],
+        data: Data.fromJson(json["data"]),
+        error: json["error"],
+        timestamp: DateTime.parse(json["timestamp"]),
       );
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['success'] = success;
-    if (data != null) {
-      map['data'] = data?.toJson();
-    }
-    map['error'] = error;
-    map['scope'] = scope;
-    return map;
-  }
 }
 
 class Data {
+  List<Transaction>? invoices;
+  int? all;
+
   Data({
-    this.transactions,
+    this.invoices,
+    this.all,
   });
 
-  Data.fromJson(dynamic json) {
-    if (json['transactions'] != null) {
-      transactions = [];
-      json['transactions'].forEach((v) {
-        transactions?.add(Transaction.fromJson(v));
-      });
-    }
-  }
+  factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
 
-  List<Transaction>? transactions;
-
-  Data copyWith({
-    List<Transaction>? transactions,
-  }) =>
-      Data(
-        transactions: transactions ?? this.transactions,
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+        invoices: List<Transaction>.from(
+            json["invoices"].map((x) => Transaction.fromJson(x))),
+        all: json["all"],
       );
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    if (transactions != null) {
-      map['transactions'] = transactions?.map((v) => v.toJson()).toList();
-    }
-    return map;
-  }
 }
 
 class Transaction {
+  String? id;
+  int? amount;
+  User? user;
+  Cause? cause;
+  String? type;
+  String? date;
+  String? time;
+
   Transaction({
-    this.account,
+    this.id,
     this.amount,
+    this.user,
+    this.cause,
     this.type,
-    this.transActionCause,
+    this.date,
     this.time,
   });
 
-  Transaction.fromJson(dynamic json) {
-    account = json['account'];
-    amount = json['amount'];
-    type = json['Type'];
-    transActionCause = json['transActionCause'];
-    time = json['time'];
-  }
+  factory Transaction.fromRawJson(String str) =>
+      Transaction.fromJson(json.decode(str));
 
-  String? account;
-  num? amount;
-  String? type;
-  String? transActionCause;
-  String? time;
+  String toRawJson() => json.encode(toJson());
 
-  Transaction copyWith({
-    String? account,
-    num? amount,
-    String? type,
-    String? transActionCause,
-    String? time,
-  }) =>
-      Transaction(
-        account: account ?? this.account,
-        amount: amount ?? this.amount,
-        type: type ?? this.type,
-        transActionCause: transActionCause ?? this.transActionCause,
-        time: time ?? this.time,
+  factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
+        id: json["_id"],
+        amount: json["amount"],
+        user: User.fromJson(json["user"]),
+        cause: Cause.fromJson(json["cause"]),
+        type: json["type"],
+        date: json['date'],
+        time: json['time'],
       );
 
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['account'] = account;
-    map['amount'] = amount;
-    map['Type'] = type;
-    map['transActionCause'] = transActionCause;
-    map['time'] = time;
-    return map;
-  }
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "amount": amount,
+        "user": user?.toJson(),
+        "cause": cause?.toJson(),
+        "type": type,
+      };
+}
+
+class Cause {
+  String? id;
+  String? causes;
+
+  Cause({
+    this.id,
+    this.causes,
+  });
+
+  factory Cause.fromRawJson(String str) => Cause.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Cause.fromJson(Map<String, dynamic> json) => Cause(
+        id: json["_id"],
+        causes: json["causes"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "causes": causes,
+      };
+}
+
+class User {
+  String? id;
+  String? name;
+
+  User({
+    this.id,
+    this.name,
+  });
+
+  factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory User.fromJson(Map<String, dynamic> json) => User(
+        id: json["_id"],
+        name: json["name"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "name": name,
+      };
 }

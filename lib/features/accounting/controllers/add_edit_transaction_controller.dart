@@ -41,10 +41,9 @@ class AddEditTransactionDialogController extends GetxController {
     update([addTransactionUpdateKey]);
 
     Transaction transaction = Transaction(
-      account: selectedAccountName,
       type: selectedStatus,
       amount: int.tryParse(amountController.text.replaceAll(',', '')),
-      transActionCause: reasonController.text,
+      cause: Cause(causes: reasonController.text),
     );
 
     AccountingRepository accountingRepository = AccountingRepository();

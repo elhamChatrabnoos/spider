@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sockettest/features/accounting/models/get_transactions_response.dart';
 
-class AccountingItem extends StatelessWidget {
-  const AccountingItem({super.key, required this.transaction});
+class TransactionItem extends StatelessWidget {
+  const TransactionItem({super.key, required this.transaction});
 
   final Transaction transaction;
 
@@ -18,7 +18,7 @@ class AccountingItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).primaryColor.withOpacity(0.2),
+              color: Theme.of(context).colorScheme.onTertiary.withOpacity(0.2),
               spreadRadius: 5,
               blurRadius: 12,
               offset: const Offset(2, 2),
@@ -38,7 +38,8 @@ class AccountingItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildRow(context, 'Account Name ', transaction.account),
+                  _buildRow(
+                      context, 'Account Name ', transaction.user?.name ?? ''),
                   SizedBox(height: 10),
                   _buildRow(
                     context,
@@ -48,7 +49,7 @@ class AccountingItem extends StatelessWidget {
                         .toString(),
                   ),
                   SizedBox(height: 10),
-                  _buildRow(context, 'Reason', transaction.transActionCause),
+                  _buildRow(context, 'Reason', transaction.cause?.causes),
                 ],
               ),
             ),
@@ -56,13 +57,13 @@ class AccountingItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  transaction.type == 1 ? 'Deposit' : 'Withdraw',
+                  transaction.type == 'deposit' ? 'Deposit' : 'Withdraw',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: transaction.type == 1 ? Colors.green : Colors.red),
+                      color: transaction.type == 'deposit' ? Colors.green : Colors.red),
                 ),
                 Spacer(),
                 Text(
-                  transaction.time ?? '',
+                  '${transaction.date ?? ''} ${transaction.time}',
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:sockettest/app/config/app_helper.dart';
 import 'package:sockettest/app/network/request_status.dart';
@@ -8,20 +9,29 @@ import 'package:sockettest/features/accounting/repository/accounting_repository.
 class AccountingPageController extends GetxController {
   RequestStatus getTransactionsStatus = RequestStatus();
   final String transactionsUpdateKey = 'getTransactionsUpdateKey';
+  AccountingRepository accountingRepository = AccountingRepository();
 
   List<Transaction> transactionList = [];
 
-  Future<void> getTransactions() async {
-    getTransactionsStatus.loading();
-    update([transactionsUpdateKey]);
+  Future<void> getTransactions({required int pageNumber, bool? getMore}) async {
+    if (!(getMore ?? false)) {
+      getTransactionsStatus.loading();
+      update([transactionsUpdateKey]);
+    }
 
-    AccountingRepository accountingRepository = AccountingRepository();
-    final responseState = await accountingRepository.getTransactions();
+    final responseState =
+        await accountingRepository.getTransactions(pageNumber);
 
     if (responseState is ResponseSuccess<GetTransactionsResponse>) {
+      totalPages = responseState.data?.data?.all ?? 1;
+
+      if (getMore ?? false) {
+        transactionList.addAll(responseState.data?.data?.invoices ?? []);
+      } else {
+        transactionList = responseState.data?.data?.invoices ?? [];
+      }
+
       getTransactionsStatus.success();
-      transactionList =
-          responseState.data?.data?.transactions?.reversed.toList() ?? [];
       update([transactionsUpdateKey]);
     }
     if (responseState is ResponseFailed) {
@@ -30,9 +40,28 @@ class AccountingPageController extends GetxController {
     }
   }
 
+  ScrollController scrollController = ScrollController();
+  int pageNumber = 1;
+  int totalPages = 1;
+
+  void listenToScroll() {
+    scrollController.addListener(
+      () {
+        if (scrollController.position.maxScrollExtent >
+            scrollController.position.pixels) {
+          if (pageNumber < totalPages) {
+            pageNumber += 1;
+            getTransactions(pageNumber: pageNumber, getMore: true);
+          }
+        }
+      },
+    );
+  }
+
   @override
   void onInit() {
-    getTransactions();
+    getTransactions(pageNumber: 1);
+    listenToScroll();
     super.onInit();
   }
 

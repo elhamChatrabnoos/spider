@@ -176,6 +176,7 @@ class AddEditAccountingDialog extends StatelessWidget {
                           Status.loading,
                       text: 'Save',
                       borderRadius: 15,
+                      textColor: Theme.of(context).colorScheme.tertiary,
                       height: 50,
                       onPressed: () {
                         if ((controller.formKey.currentState?.validate() ??
