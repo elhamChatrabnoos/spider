@@ -7,6 +7,7 @@ class ApiAddresses{
   static const String getTransactions = '/accountant/api/getalltransactions';
 
   static const String login = '/login/';
+  static const String reasons = '/cause/all';
   static const String verifyOtp = '/account/login/';
   static const String register = '/account/register/';
   static const String refreshToken = '/token/refresh/';

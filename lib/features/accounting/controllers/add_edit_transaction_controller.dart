@@ -4,6 +4,7 @@ import 'package:sockettest/app/network/request_status.dart';
 import 'package:sockettest/app/network/response_status.dart';
 import 'package:sockettest/features/accounting/controllers/accounting_page_controller.dart';
 import 'package:sockettest/features/accounting/models/get_transactions_response.dart';
+import 'package:sockettest/features/accounting/models/reasons_response_model.dart';
 import 'package:sockettest/features/accounting/repository/accounting_repository.dart';
 
 class AddEditTransactionDialogController extends GetxController {
@@ -71,5 +72,36 @@ class AddEditTransactionDialogController extends GetxController {
       addTransactionStatus.error('${responseState.error}', showMessage: true);
       update([addTransactionUpdateKey]);
     }
+  }
+
+
+  /// get reasons
+  RequestStatus getReasonsStatus = RequestStatus();
+  final String getReasonsUpdateKey = 'getReasonsUpdateKey';
+  List<Reason> reasonsList = [];
+
+  Future<void> getReasons() async {
+    getReasonsStatus.loading();
+    update([getReasonsUpdateKey]);
+
+    AccountingRepository accountingRepository = AccountingRepository();
+    final responseState =
+    await accountingRepository.getReasons();
+
+    if (responseState is ResponseSuccess<ReasonsResponse>) {
+      reasonsList = responseState.data?.data ?? [];
+      getReasonsStatus.success();
+      update([getReasonsUpdateKey]);
+    }
+    if (responseState is ResponseFailed) {
+      getReasonsStatus.error('${responseState.error}', showMessage: false);
+      update([getReasonsUpdateKey]);
+    }
+  }
+
+  @override
+  void onInit() {
+    // getReasons();
+    super.onInit();
   }
 }

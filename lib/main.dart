@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:sockettest/app/config/app_helper.dart';
 import 'package:sockettest/app/config/app_theme.dart';
+import 'package:sockettest/features/home/views/pages/home_page.dart';
 import 'package:sockettest/features/login/views/pages/login_page.dart';
 import 'package:sockettest/features/main/bindings/main_page_binding.dart';
 import 'package:sockettest/features/main/views/pages/main_page.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       initialBinding: MainPageBinding(),
       debugShowCheckedModeBanner: false,
       theme: AppTheme.appThemeLight(),
-      home: LoginPage(),
+      home: MainPage(),
     );
   }
 }

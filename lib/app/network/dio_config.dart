@@ -24,10 +24,10 @@ class DioConfig {
                 '${ApiAddresses.baseUrl}api/v1/token/refresh/') {
               return handler.next(options);
             }
-            // String? token = await LocalDb.getAccessToken();
-            // if (token != null && token.isNotEmpty) {
-            //   options.headers = {'Authorization': 'Bearer $token'};
-            // }
+            String? token = await LocalDb.getAccessToken();
+            if (token != null && token.isNotEmpty) {
+              options.headers = {'Authorization': 'Bearer $token'};
+            }
             return handler.next(options);
           },
           onError: (DioException e, handler) async {

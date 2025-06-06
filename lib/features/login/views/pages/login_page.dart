@@ -82,7 +82,7 @@ class LoginPage extends StatelessWidget {
                                         'GO',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .titleLarge,
+                                            .titleMedium,
                                       ),
                               );
                             },

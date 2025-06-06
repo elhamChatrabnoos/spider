@@ -4,6 +4,7 @@ import 'package:sockettest/app/network/api_addresses.dart';
 import 'package:sockettest/app/network/response_status.dart';
 import 'package:sockettest/app/network/server_response.dart';
 import 'package:sockettest/features/accounting/models/get_transactions_response.dart';
+import 'package:sockettest/features/accounting/models/reasons_response_model.dart';
 
 class AccountingRepository {
   /// get all transaction
@@ -13,6 +14,19 @@ class AccountingRepository {
           await AppHelper.dioConfig.dio.get(ApiAddresses.getTransactions);
       final GetTransactionsResponse model =
           GetTransactionsResponse.fromJson(response.data);
+      return ResponseSuccess(model);
+    } on DioException catch (error) {
+      return ResponseFailed(AppHelper.checkException(error));
+    }
+  }
+
+  /// get reasons list
+  Future<ResponseStatus<ReasonsResponse>> getReasons() async {
+    try {
+      final response =
+          await AppHelper.dioConfig.dio.get(ApiAddresses.reasons);
+      final ReasonsResponse model =
+          ReasonsResponse.fromJson(response.data);
       return ResponseSuccess(model);
     } on DioException catch (error) {
       return ResponseFailed(AppHelper.checkException(error));
@@ -31,7 +45,8 @@ class AccountingRepository {
         response = await AppHelper.dioConfig.dio.put(
           '${ApiAddresses.withDraw}/${transaction.account}',
           data: {
-            "amount": int.tryParse(transaction.amount.toString().replaceAll(',', '')),
+            "amount":
+                int.tryParse(transaction.amount.toString().replaceAll(',', '')),
             "cause": transaction.transActionCause,
           },
         );
@@ -39,7 +54,8 @@ class AccountingRepository {
         response = await AppHelper.dioConfig.dio.put(
           '${ApiAddresses.deposit}/${transaction.account}',
           data: {
-            "amount": int.tryParse(transaction.amount.toString().replaceAll(',', '')),
+            "amount":
+                int.tryParse(transaction.amount.toString().replaceAll(',', '')),
             "cause": transaction.transActionCause,
           },
         );
