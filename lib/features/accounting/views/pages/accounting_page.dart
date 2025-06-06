@@ -34,7 +34,7 @@ class AccountingPage extends GetView<AccountingPageController> {
         id: controller.transactionsUpdateKey,
         builder: (logic) {
           if (controller.getTransactionsStatus.status == Status.loading) {
-            return Expanded(child: Center(child: MyProgressIndicator()));
+            return Center(child: MyProgressIndicator());
           }
           if (controller.getTransactionsStatus.status == Status.error) {
             return CustomErrorWidget(

@@ -32,7 +32,7 @@ class AccountsPage extends GetView<AccountsPageController> {
         id: controller.getAccountsUpdateKey,
         builder: (logic) {
           if (controller.getAccountStatus.status == Status.loading) {
-            return Expanded(child: Center(child: MyProgressIndicator()));
+            return Center(child: MyProgressIndicator());
           }
           if (controller.getAccountStatus.status == Status.error) {
             return CustomErrorWidget(
