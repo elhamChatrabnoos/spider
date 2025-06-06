@@ -33,40 +33,34 @@ class AccountingRepository {
     }
   }
 
-  /// add account
-  Future<ResponseStatus<String>> addTransaction({
+  /// add transaction
+  Future<ResponseStatus<ServerResponse>> addTransaction({
     required Transaction transaction,
   }) async {
     try {
-      AppHelper.customPrint(transaction.amount);
-
       var response;
-      if (transaction.type == 0) {
-        response = await AppHelper.dioConfig.dio.put(
-          '${ApiAddresses.withDraw}/${transaction.account}',
+        response = await AppHelper.dioConfig.dio.post(
+          ApiAddresses.invoice,
           data: {
             "amount":
                 int.tryParse(transaction.amount.toString().replaceAll(',', '')),
             "cause": transaction.transActionCause,
+            "type" : transaction.type?.toLowerCase()
           },
         );
-      } else {
-        response = await AppHelper.dioConfig.dio.put(
-          '${ApiAddresses.deposit}/${transaction.account}',
-          data: {
-            "amount":
-                int.tryParse(transaction.amount.toString().replaceAll(',', '')),
-            "cause": transaction.transActionCause,
-          },
-        );
-      }
+      // } else {
+      //   response = await AppHelper.dioConfig.dio.put(
+      //     '${ApiAddresses.deposit}/${transaction.account}',
+      //     data: {
+      //       "amount":
+      //           int.tryParse(transaction.amount.toString().replaceAll(',', '')),
+      //       "cause": transaction.transActionCause,
+      //     },
+      //   );
+      // }
 
       final ServerResponse model = ServerResponse.fromJson(response.data);
-      if (model.success ?? false) {
-        return ResponseSuccess('Transaction added successful.');
-      } else {
-        return ResponseFailed(model.error ?? 'Error');
-      }
+      return ResponseSuccess(model);
     } on DioException catch (error) {
       return ResponseFailed(AppHelper.checkException(error));
     }

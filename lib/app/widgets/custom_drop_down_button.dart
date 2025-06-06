@@ -24,7 +24,7 @@ class CustomDropDownButton extends StatelessWidget {
         Text(title),
         const SizedBox(height: 5),
         FormField<String>(
-          validator: (value) {
+          validator: validator ?? (value) {
             if (value == null || value.isEmpty) {
               return 'Please select an item';
             }

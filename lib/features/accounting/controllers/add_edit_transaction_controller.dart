@@ -2,13 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:sockettest/app/network/request_status.dart';
 import 'package:sockettest/app/network/response_status.dart';
+import 'package:sockettest/app/network/server_response.dart';
 import 'package:sockettest/features/accounting/controllers/accounting_page_controller.dart';
 import 'package:sockettest/features/accounting/models/get_transactions_response.dart';
 import 'package:sockettest/features/accounting/models/reasons_response_model.dart';
 import 'package:sockettest/features/accounting/repository/accounting_repository.dart';
 
 class AddEditTransactionDialogController extends GetxController {
-  TextEditingController descriptionController = TextEditingController();
+  TextEditingController reasonController = TextEditingController();
   TextEditingController amountController = TextEditingController();
 
   /// account name
@@ -41,34 +42,26 @@ class AddEditTransactionDialogController extends GetxController {
 
     Transaction transaction = Transaction(
       account: selectedAccountName,
-      type: selectedStatus?.toLowerCase() == 'withdraw' ? 0 : 1,
+      type: selectedStatus,
       amount: int.tryParse(amountController.text.replaceAll(',', '')),
-      transActionCause: descriptionController.text,
+      transActionCause: reasonController.text,
     );
 
     AccountingRepository accountingRepository = AccountingRepository();
     final responseState =
         await accountingRepository.addTransaction(transaction: transaction);
 
-    if (responseState is ResponseSuccess<String>) {
+    if (responseState is ResponseSuccess<ServerResponse>) {
       Get.back();
-      descriptionController.text = '';
-      amountController.text = '';
-      selectedAccountName = null;
-      selectedStatus = null;
       addTransactionStatus.success(
-          message: responseState.data, title: 'Success');
+          message: responseState.data?.message, title: 'Success');
 
       /// add transaction locally to transaction list
-      Get.find<AccountingPageController>().addTransaction(transaction);
+      // Get.find<AccountingPageController>().addTransaction(transaction);
       update([addTransactionUpdateKey]);
     }
     if (responseState is ResponseFailed) {
       Get.back();
-      descriptionController.text = '';
-      amountController.text = '';
-      selectedAccountName = null;
-      selectedStatus = null;
       addTransactionStatus.error('${responseState.error}', showMessage: true);
       update([addTransactionUpdateKey]);
     }

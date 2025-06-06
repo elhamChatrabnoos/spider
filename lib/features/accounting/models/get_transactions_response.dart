@@ -94,14 +94,14 @@ class Transaction {
 
   String? account;
   num? amount;
-  num? type;
+  String? type;
   String? transActionCause;
   String? time;
 
   Transaction copyWith({
     String? account,
     num? amount,
-    num? type,
+    String? type,
     String? transActionCause,
     String? time,
   }) =>
