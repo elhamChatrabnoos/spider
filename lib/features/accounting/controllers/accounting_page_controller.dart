@@ -15,6 +15,7 @@ class AccountingPageController extends GetxController {
 
   Future<void> getTransactions({required int pageNumber, bool? getMore}) async {
     if (!(getMore ?? false)) {
+      this.pageNumber = 1;
       getTransactionsStatus.loading();
       update([transactionsUpdateKey]);
     }

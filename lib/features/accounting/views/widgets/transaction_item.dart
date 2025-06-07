@@ -39,8 +39,7 @@ class TransactionItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildRow(
-                      context, 'Account Name ', transaction.user?.name ?? ''),
+                  _userName(context),
                   SizedBox(height: 10),
                   _buildRow(
                     context,
@@ -58,9 +57,13 @@ class TransactionItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  transaction.type?.toLowerCase() == 'deposit' ? 'Deposit' : 'Withdraw',
+                  transaction.type?.toLowerCase() == 'deposit'
+                      ? 'Deposit'
+                      : 'Withdraw',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: transaction.type?.toLowerCase() == 'deposit' ? Colors.green : Colors.red),
+                      color: transaction.type?.toLowerCase() == 'deposit'
+                          ? Colors.green
+                          : Colors.red),
                 ),
                 Spacer(),
                 Text(
@@ -74,6 +77,25 @@ class TransactionItem extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Container _userName(BuildContext context) {
+    bool isHossein = transaction.user?.name?.toLowerCase() == 'hossein';
+    Color containerColor = isHossein ? Colors.black : Colors.white;
+    Color textColor = isHossein ? Colors.white : Colors.black;
+
+    return Container(
+      padding: EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
+      decoration: BoxDecoration(
+        color: containerColor.withValues(alpha: 0.7),
+        borderRadius: BorderRadius.circular(50),
+      ),
+      child: Text(
+        '${transaction.user?.name}',
+        style:
+            Theme.of(context).textTheme.titleMedium?.copyWith(color: textColor),
       ),
     );
   }
