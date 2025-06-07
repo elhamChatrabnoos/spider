@@ -12,7 +12,7 @@ class ReasonsResponse {
   String? message;
   List<Reason>? data;
   String? error;
-  DateTime? timestamp;
+  String? timestamp;
 
   ReasonsResponse({
     this.success,
@@ -27,7 +27,7 @@ class ReasonsResponse {
     message: json["message"],
     data: List<Reason>.from(json["data"].map((x) => Reason.fromJson(x))),
     error: json["error"],
-    timestamp: DateTime.parse(json["timestamp"]),
+    timestamp: json["timestamp"],
   );
 
 }

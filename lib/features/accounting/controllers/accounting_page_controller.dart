@@ -60,7 +60,6 @@ class AccountingPageController extends GetxController {
 
   @override
   void onInit() {
-    getTransactions(pageNumber: 1);
     listenToScroll();
     super.onInit();
   }

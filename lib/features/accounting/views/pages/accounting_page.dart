@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:sockettest/app/config/app_helper.dart';
 import 'package:sockettest/app/network/request_status.dart';
 import 'package:sockettest/app/widgets/error_widget.dart';
 import 'package:sockettest/app/widgets/my_progress_indicator_widget.dart';
@@ -16,16 +17,19 @@ class AccountingPage extends GetView<AccountingPageController> {
   Widget build(BuildContext context) {
     Get.lazyPut(() => AccountingPageController());
     Get.put(AccountsPageController());
+    controller.getTransactions(pageNumber: 1);
     return Scaffold(
       appBar: AppBar(
         title: Text('Accounting'),
         backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
         actions: [
           IconButton(
-            onPressed: () => showDialog(
-              context: context,
-              builder: (context) => AddEditAccountingDialog(),
-            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AddEditAccountingDialog(),
+              );
+            },
             icon: Icon(
               Icons.add,
               size: 40,

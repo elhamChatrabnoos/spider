@@ -52,8 +52,7 @@ class Transaction {
   User? user;
   Cause? cause;
   String? type;
-  String? date;
-  String? time;
+  String? createdAt;
 
   Transaction({
     this.id,
@@ -61,8 +60,7 @@ class Transaction {
     this.user,
     this.cause,
     this.type,
-    this.date,
-    this.time,
+    this.createdAt,
   });
 
   factory Transaction.fromRawJson(String str) =>
@@ -76,8 +74,7 @@ class Transaction {
         user: User.fromJson(json["user"]),
         cause: Cause.fromJson(json["cause"]),
         type: json["type"],
-        date: json['date'],
-        time: json['time'],
+        createdAt: json['createdAt'],
       );
 
   Map<String, dynamic> toJson() => {

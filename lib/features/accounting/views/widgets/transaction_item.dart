@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sockettest/app/config/app_helper.dart';
 import 'package:sockettest/features/accounting/models/get_transactions_response.dart';
 
 class TransactionItem extends StatelessWidget {
@@ -57,13 +58,13 @@ class TransactionItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  transaction.type == 'deposit' ? 'Deposit' : 'Withdraw',
+                  transaction.type?.toLowerCase() == 'deposit' ? 'Deposit' : 'Withdraw',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: transaction.type == 'deposit' ? Colors.green : Colors.red),
+                      color: transaction.type?.toLowerCase() == 'deposit' ? Colors.green : Colors.red),
                 ),
                 Spacer(),
                 Text(
-                  '${transaction.date ?? ''} ${transaction.time}',
+                  AppHelper.changeUtcToShamsiDateTime(transaction.createdAt),
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall

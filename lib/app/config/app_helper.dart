@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:shamsi_date/shamsi_date.dart';
 import 'package:sockettest/app/config/app_constants.dart';
 import 'package:sockettest/app/network/dio_config.dart';
 
@@ -27,11 +28,9 @@ class AppHelper {
         error.type == DioExceptionType.connectionTimeout ||
         error.response == null) {
       return AppConstants.someThingWrong;
-    }
-    else if (error.response!.data['error'] != null) {
+    } else if (error.response!.data['error'] != null) {
       return error.response!.data['error'];
-    }
-    else if (error.response!.statusCode == 500) {
+    } else if (error.response!.statusCode == 500) {
       return AppConstants.someThingWrong;
     }
     return AppConstants.someThingWrong;
@@ -153,6 +152,28 @@ class AppHelper {
 
     return '$visiblePart$obfuscatedPart$domain';
   }
+
+  static String changeUtcToShamsiDateTime(String? utcDateTime) {
+
+    if (utcDateTime != null) {
+      if(!utcDateTime.contains('Z')){
+         utcDateTime = utcDateTime + '.000Z';
+      }
+      DateTime dateTime = DateTime.parse(utcDateTime);
+
+      DateTime localDateTime = dateTime.toLocal();
+      print(localDateTime);
+
+      // Convert the local DateTime to Shamsi date
+      Jalali shamsiDate = Jalali.fromDateTime(localDateTime);
+
+      // Format the Shamsi date to string
+      String formattedShamsiDate =
+          "${shamsiDate.year}/${shamsiDate.month}/${shamsiDate.day}  ${shamsiDate.hour.toString().padLeft(2, '0')}:${shamsiDate.minute.toString().padLeft(2, '0')}";
+      return formattedShamsiDate;
+    }
+    return '';
+  }
 }
 
 class NumberInputFormatter extends TextInputFormatter {
@@ -161,7 +182,7 @@ class NumberInputFormatter extends TextInputFormatter {
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
-    // Remove any previously formatted commas
+    // Remove any previously formatted commaNs
     String newText = newValue.text.replaceAll(',', '');
 
     // Convert the cleaned-up string back to an integer

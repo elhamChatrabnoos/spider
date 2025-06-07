@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 class MainPageController extends GetxController {
   // tabs
-  int currentBottomTabIndex = 0;
+  int currentBottomTabIndex = 1;
 
   void Function() onTapNavItem(int index) {
     return () {

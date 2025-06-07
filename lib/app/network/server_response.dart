@@ -10,7 +10,7 @@ class ServerResponse {
   String? message;
   dynamic data;
   String? error;
-  DateTime? timestamp;
+  String? timestamp;
 
   ServerResponse({
     this.success,
@@ -25,7 +25,7 @@ class ServerResponse {
     message: json["message"],
     data: json["data"],
     error: json["error"],
-    timestamp: DateTime.parse(json["timestamp"]),
+    timestamp: json["timestamp"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -33,6 +33,6 @@ class ServerResponse {
     "message": message,
     "data": data,
     "error": error,
-    "timestamp": timestamp?.toIso8601String(),
+    "timestamp": timestamp,
   };
 }

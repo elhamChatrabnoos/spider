@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:sockettest/app/config/app_helper.dart';
 import 'package:sockettest/app/network/request_status.dart';
 import 'package:sockettest/app/network/response_status.dart';
 import 'package:sockettest/app/network/server_response.dart';
@@ -51,12 +52,12 @@ class AddEditTransactionDialogController extends GetxController {
         await accountingRepository.addTransaction(transaction: transaction);
 
     if (responseState is ResponseSuccess<ServerResponse>) {
+      transaction.createdAt = responseState.data!.timestamp;
       Get.back();
+      /// add transaction locally to transaction list
+      Get.find<AccountingPageController>().addTransaction(transaction);
       addTransactionStatus.success(
           message: responseState.data?.message, title: 'Success');
-
-      /// add transaction locally to transaction list
-      // Get.find<AccountingPageController>().addTransaction(transaction);
       update([addTransactionUpdateKey]);
     }
     if (responseState is ResponseFailed) {
@@ -65,7 +66,6 @@ class AddEditTransactionDialogController extends GetxController {
       update([addTransactionUpdateKey]);
     }
   }
-
 
   /// get reasons
   RequestStatus getReasonsStatus = RequestStatus();
@@ -77,8 +77,7 @@ class AddEditTransactionDialogController extends GetxController {
     update([getReasonsUpdateKey]);
 
     AccountingRepository accountingRepository = AccountingRepository();
-    final responseState =
-    await accountingRepository.getReasons();
+    final responseState = await accountingRepository.getReasons();
 
     if (responseState is ResponseSuccess<ReasonsResponse>) {
       reasonsList = responseState.data?.data ?? [];
