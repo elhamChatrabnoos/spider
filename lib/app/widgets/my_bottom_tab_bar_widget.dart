@@ -11,17 +11,15 @@ class MyBottomTabBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // margin: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
       height: 70,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
-        // borderRadius: BorderRadius.circular(24),
+        color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.2),
         boxShadow: [
           BoxShadow(
             blurRadius: 10,
             offset: const Offset(1, 1),
             spreadRadius: 2,
-            color: Theme.of(context).colorScheme.tertiary.withOpacity(0.2),
+            color: Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.2),
           )
         ],
       ),
@@ -103,8 +101,6 @@ class TabBarItemWidget extends StatelessWidget {
               child: assetName != null
                   ? Center(
                       child: SvgPicture.asset(
-                        // width: title == 'home' ? 18 : 24,
-                        // height: title == 'home' ? 18 : 24,
                         assetName!,
                         colorFilter: ColorFilter.mode(
                           isSelected
@@ -128,7 +124,7 @@ class TabBarItemWidget extends StatelessWidget {
                       width: 15,
                       height: 5,
                       decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.onPrimary,
+                          color: Theme.of(context).colorScheme.secondary,
                           borderRadius: BorderRadius.circular(100)),
                     ),
                   )

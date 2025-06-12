@@ -31,7 +31,7 @@ class TransactionItem extends StatelessWidget {
           children: [
             Icon(
               Icons.account_balance_wallet_outlined,
-              color: Theme.of(context).colorScheme.onPrimary,
+              color: Theme.of(context).colorScheme.onSecondary,
             ),
             SizedBox(width: 10),
             Expanded(

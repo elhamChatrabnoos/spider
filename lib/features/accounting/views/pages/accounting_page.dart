@@ -16,12 +16,12 @@ class AccountingPage extends GetView<AccountingPageController> {
   Widget build(BuildContext context) {
     Get.lazyPut(() => AccountingPageController());
     Get.put(AccountsPageController());
-    // controller.getTransactions(pageNumber: 1);
-    // controller.getTotalInfo();
+    controller.getTransactions(pageNumber: 1);
+    controller.getTotalInfo();
     return Scaffold(
       appBar: AppBar(
         title: Text('Accounting'),
-        backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         actions: [
           IconButton(
             onPressed: () {

@@ -212,7 +212,7 @@ class CustomTextField extends StatelessWidget {
       focusNode: focusNode,
       readOnly: readOnly ?? false,
       onTap: onTap,
-      key: globalKey,
+      // key: globalKey,
       cursorColor: cursorColor,
       autofocus: autofocus ?? false,
       textAlignVertical: textAlignVertical,

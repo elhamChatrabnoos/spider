@@ -8,6 +8,7 @@ import 'package:sockettest/app/widgets/custom_drop_down_button.dart';
 import 'package:sockettest/app/widgets/custom_text_field.dart';
 import 'package:sockettest/features/accounting/controllers/add_edit_transaction_controller.dart';
 import 'package:sockettest/features/accounting/models/reasons_response_model.dart';
+import 'package:sockettest/features/accounting/views/widgets/auto_complete_field.dart';
 
 class AddEditAccountingDialog extends StatelessWidget {
   const AddEditAccountingDialog({super.key});
@@ -22,35 +23,12 @@ class AddEditAccountingDialog extends StatelessWidget {
         Get.delete<AddEditTransactionDialogController>();
       },
       child: AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
         content: SingleChildScrollView(
           child: Form(
             key: controller.formKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Column(
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
-                //     GetBuilder<AddEditTransactionDialogController>(
-                //       id: controller.accountNameUpdateKey,
-                //       builder: (logic) {
-                //         return CustomDropDownButton(
-                //           title: 'Account Name:',
-                //           selectedItem: controller.selectedAccountName,
-                //           targetList: accountsController.accountsList
-                //               .map((e) => e.name ?? '')
-                //               .toSet()
-                //               .toList(),
-                //           onChanged: (p0) {
-                //             controller.changeAccountName(p0 ?? '');
-                //           },
-                //         );
-                //       },
-                //     )
-                //   ],
-                // ),
-                // SizedBox(height: 20),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -61,7 +39,7 @@ class AddEditAccountingDialog extends StatelessWidget {
                           validator: (p0) => controller.selectedStatus == null
                               ? 'Please select transaction type'
                               : null,
-                          title: 'Status: ',
+                          title: 'Status ',
                           selectedItem: controller.selectedStatus,
                           targetList: ['Withdraw', 'Deposit'],
                           onChanged: (p0) {
@@ -76,80 +54,16 @@ class AddEditAccountingDialog extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Reason: '),
+                    Text('Reason '),
                     SizedBox(height: 10),
-                    GetBuilder<AddEditTransactionDialogController>(
-                      id: controller.getReasonsUpdateKey,
-                      builder: (logic) {
-                        return Autocomplete<Reason>(
-                          fieldViewBuilder: (context, textEditingController,
-                              focusNode, onFieldSubmitted) {
-                            controller.reasonController = textEditingController;
-                            return CustomTextField(
-                              focusNode: focusNode,
-                              checkValidation: (value) =>
-                                  AppHelper.checkValidation(value ?? ''),
-                              controller: textEditingController,
-                              hintText: 'Enter reason',
-                              enableBorder: false,
-                              fillColor: Theme.of(context).colorScheme.onPrimary,
-                              textColor: Theme.of(context).colorScheme.tertiary,
-                            );
-                          },
-                          optionsMaxHeight: MediaQuery.sizeOf(context).height / 3,
-                          optionsViewBuilder: (context, onSelected, options) {
-                            if (logic.getReasonsStatus.status == Status.success)
-                              return Align(
-                                alignment: Alignment.topLeft,
-                                child: Container(
-                                  padding: EdgeInsets.all(10),
-                                  width: MediaQuery.sizeOf(context).width / 1.5,
-                                  height: MediaQuery.sizeOf(context).height / 10,
-                                  decoration: BoxDecoration(color: Colors.grey),
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      spacing: 10,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: options
-                                          .map(
-                                            (e) => InkWell(
-                                              onTap: () {
-                                                onSelected(e);
-                                                controller.reasonController.text =
-                                                    e.causes ?? '';
-                                                FocusScope.of(context)
-                                                    .requestFocus(FocusNode());
-                                              },
-                                              child: Text(e.causes ?? ''),
-                                            ),
-                                          )
-                                          .toList(),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            return SizedBox();
-                          },
-                          optionsBuilder: (textEditingValue) {
-                            if (logic.reasonsList.isEmpty) {
-                              return [];
-                            }
-                            return logic.reasonsList.where((element) => element
-                                .causes!
-                                .contains(textEditingValue.text.toLowerCase()));
-                          },
-                        );
-                      },
-                    ),
+                    AutoCompleteField(),
                   ],
                 ),
                 SizedBox(height: 20),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Amount: '),
+                    Text('Amount '),
                     SizedBox(height: 10),
                     CustomTextField(
                       checkValidation: (value) =>
@@ -161,9 +75,7 @@ class AddEditAccountingDialog extends StatelessWidget {
                       ],
                       keyboardType: TextInputType.number,
                       hintText: 'Enter amount',
-                      enableBorder: false,
-                      fillColor: Theme.of(context).colorScheme.onPrimary,
-                      textColor: Theme.of(context).colorScheme.tertiary,
+                      enableBorder: true,
                     )
                   ],
                 ),

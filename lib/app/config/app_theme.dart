@@ -2,14 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
+  // static const Color primary = Color(0xFFFFEA00);
+  // static const Color onPrimary = Color(0xFFFFFFFF);
+  // static const primaryContainer = Color(0xff8d8d8d);
+  // static const onPrimaryContainer = Color(0xff4b4b4b);
+  // static const secondary = Color(0xff343C45);
+  // static const onSurface = Color(0xFFFFFFFF);
+  // static const tertiary = Color(0xFF000000);
+  // static const onTertiary = Color(0xFFFFFFFF);
+
+
   static const Color primary = Color(0xFFFFEA00);
-  static const Color onPrimary = Color(0xFFFFFFFF);
-  static const primaryContainer = Color(0xff8d8d8d);
-  static const onPrimaryContainer = Color(0xff4b4b4b);
-  static const secondary = Color(0xff343C45);
+  static const Color onPrimary = Color(0xFF000000);
+  static const secondary = Color(0xff8d8d8d);
+  static const onSecondary = Color(0xffffffff);
+  static const backgroundColor = Color(0xff000000);
+  static const onBackgroundColor = Color(0xfffdfdfd);
+  static const surface = Color(0xff343C45);
   static const onSurface = Color(0xFFFFFFFF);
-  static const tertiary = Color(0xFF000000);
-  static const onTertiary = Color(0xFFFFFFFF);
+  static const tertiary = Color(0xff555559);
 
   static const double textInputRadius = 16;
 
@@ -32,17 +43,16 @@ class AppTheme {
       useMaterial3: true,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       colorScheme: const ColorScheme.light(
+        tertiary: tertiary,
         primary: primary,
         onPrimary: onPrimary,
-        primaryContainer: primaryContainer,
-        onPrimaryContainer: onPrimaryContainer,
         secondary: secondary,
-        tertiary: tertiary,
-        onTertiary: onTertiary,
+        onSecondary: onSecondary,
+        surface: surface,
         onSurface: onSurface,
         shadow: Color(0xffF5F6F7),
       ),
-      scaffoldBackgroundColor: tertiary,
+      scaffoldBackgroundColor: backgroundColor,
       textTheme: GoogleFonts.montserratTextTheme(
         ThemeData.light().textTheme.copyWith(
               // headline
@@ -93,7 +103,6 @@ class AppTheme {
                 fontSize: 12,
                 fontWeight: FontWeight.w700,
                 fontFamily: GoogleFonts.interTextTheme.toString(),
-                color: onTertiary,
               ),
               labelSmall: _customTextStyle(
                 fontSize: 11,
@@ -105,21 +114,21 @@ class AppTheme {
       /// input style
       inputDecorationTheme: const InputDecorationTheme(
         filled: true,
-        hintStyle: TextStyle(color: primaryContainer),
-        fillColor: onPrimary,
+        hintStyle: TextStyle(color: secondary),
+        // fillColor: onPrimary,
         contentPadding:
             EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 12),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(textInputRadius)),
-          borderSide: BorderSide(color: tertiary),
+          borderSide: BorderSide(color: onSecondary),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(textInputRadius)),
-          borderSide: BorderSide(color: tertiary),
+          borderSide: BorderSide(color: onSecondary),
         ),
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(textInputRadius)),
-          borderSide: BorderSide(color: tertiary),
+          borderSide: BorderSide(color: onSecondary),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(textInputRadius)),

@@ -24,12 +24,13 @@ class CustomDropDownButton extends StatelessWidget {
         Text(title),
         const SizedBox(height: 5),
         FormField<String>(
-          validator: validator ?? (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please select an item';
-            }
-            return null;
-          },
+          validator: validator ??
+              (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please select an item';
+                }
+                return null;
+              },
           builder: (FormFieldState<String> state) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,17 +39,10 @@ class CustomDropDownButton extends StatelessWidget {
                   width: MediaQuery.sizeOf(context).width,
                   height: 45,
                   decoration: BoxDecoration(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onPrimary,
                     border: Border.all(
-                      color: state.hasError
-                          ? Colors.red
-                          : Theme.of(context)
-                              .colorScheme
-                              .onPrimary
-                              .withOpacity(0.1),
-                    ),
+                        color: state.hasError
+                            ? Colors.red
+                            : Theme.of(context).colorScheme.onSecondary),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: DropdownButtonHideUnderline(
@@ -58,37 +52,34 @@ class CustomDropDownButton extends StatelessWidget {
                           return Text(
                             textAlign: TextAlign.center,
                             item,
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.tertiary, // Change color here
-                            ),
                           );
                         }).toList();
                       },
-                      dropdownColor:
-                          Theme.of(context).colorScheme.primaryContainer,
+                      dropdownColor: Theme.of(context).colorScheme.tertiary,
                       menuMaxHeight: 200,
-                      padding: const EdgeInsets.only(left: 15, right: 10, bottom: 10, top: 10),
+                      padding: const EdgeInsets.only(
+                          left: 15, right: 10, bottom: 10, top: 10),
                       borderRadius: BorderRadius.circular(12),
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.tertiary,
+                          // color: Theme.of(context).colorScheme.tertiary,
                           ),
                       value: selectedItem,
                       hint: Text(
                         'Select',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.primaryContainer,
+                              color: Theme.of(context).colorScheme.secondary,
                             ),
                       ),
                       icon: Icon(
                         Icons.keyboard_arrow_down_rounded,
-                        color: Theme.of(context).colorScheme.primaryContainer,
+                        // color: Theme.of(context).colorScheme.primaryContainer,
                         size: 30,
                       ),
-
                       items: targetList.map((String style) {
                         return DropdownMenuItem<String>(
                           value: style,
-                          child: Text(style, style: Theme.of(context).textTheme.bodyMedium),
+                          child: Text(style,
+                              style: Theme.of(context).textTheme.bodyMedium),
                         );
                       }).toList(),
                       onChanged: (value) {
