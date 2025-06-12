@@ -1,16 +1,12 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:sockettest/app/config/app_helper.dart';
 import 'package:sockettest/app/network/request_status.dart';
 import 'package:sockettest/app/widgets/error_widget.dart';
 import 'package:sockettest/app/widgets/my_progress_indicator_widget.dart';
 import 'package:sockettest/features/accounting/controllers/accounting_page_controller.dart';
+import 'package:sockettest/features/accounting/views/widgets/add_edit_accounting_dialog.dart';
 import 'package:sockettest/features/accounting/views/widgets/box_widget.dart';
 import 'package:sockettest/features/accounting/views/widgets/transaction_item.dart';
-import 'package:sockettest/features/accounting/views/widgets/add_edit_accounting_dialog.dart';
 import 'package:sockettest/features/accounts/controllers/accounts_page_controller.dart';
 
 class AccountingPage extends GetView<AccountingPageController> {
@@ -20,8 +16,8 @@ class AccountingPage extends GetView<AccountingPageController> {
   Widget build(BuildContext context) {
     Get.lazyPut(() => AccountingPageController());
     Get.put(AccountsPageController());
-    controller.getTransactions(pageNumber: 1);
-    controller.getTotalInfo();
+    // controller.getTransactions(pageNumber: 1);
+    // controller.getTotalInfo();
     return Scaffold(
       appBar: AppBar(
         title: Text('Accounting'),
@@ -42,59 +38,65 @@ class AccountingPage extends GetView<AccountingPageController> {
           )
         ],
       ),
-      body: Column(
-        children: [
-          _buildTotalInfo(),
-          Expanded(
-            child: GetBuilder<AccountingPageController>(
-              id: controller.transactionsUpdateKey,
-              builder: (logic) {
-                if (controller.getTransactionsStatus.status == Status.loading) {
-                  return Center(child: MyProgressIndicator());
-                }
-                if (controller.getTransactionsStatus.status == Status.error) {
-                  return CustomErrorWidget(
-                    onRefreshPress: () =>
-                        controller.getTransactions(pageNumber: 1),
-                  );
-                }
-                return RefreshIndicator(
-                  onRefresh: () => controller.getTransactions(pageNumber: 1),
-                  child: ListView.builder(
-                    controller: controller.scrollController,
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                    itemCount: controller.transactionList.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return TransactionItem(
-                        transaction: controller.transactionList[index],
-                      );
-                    },
-                  ),
+      body: RefreshIndicator(
+        onRefresh: () {
+          controller.getTotalInfo();
+          return controller.getTransactions(pageNumber: 1);
+        },
+        child: GetBuilder<AccountingPageController>(
+            id: controller.transactionsUpdateKey,
+            builder: (logic) {
+              if (controller.getTransactionsStatus.status == Status.loading) {
+                return Center(child: MyProgressIndicator());
+              }
+              if (controller.getTransactionsStatus.status == Status.error) {
+                return CustomErrorWidget(
+                  onRefreshPress: () =>
+                      controller.getTransactions(pageNumber: 1),
                 );
-              },
-            ),
-          ),
-        ],
+              }
+              return SingleChildScrollView(
+                controller: controller.scrollController,
+                child: Column(
+                  children: [
+                    _buildTotalInfo(context),
+                    ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                      itemCount: controller.transactionList.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return TransactionItem(
+                          transaction: controller.transactionList[index],
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              );
+            }),
       ),
     );
   }
 
-  Widget _buildTotalInfo() {
-    return GetBuilder<AccountingPageController>(
-        id: controller.getTotalInfoUpdateKey,
-        builder: (logic) {
-          if (controller.getTotalInfoStatus.status == Status.loading) {
-            return SizedBox();
-          }
-          if (controller.getTotalInfoStatus.status == Status.error) {
-            return CustomErrorWidget(
-              onRefreshPress: () => controller.getTransactions(pageNumber: 1),
-            );
-          }
-          return Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
+  Widget _buildTotalInfo(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: GetBuilder<AccountingPageController>(
+          id: controller.getTotalInfoUpdateKey,
+          builder: (logic) {
+            if (controller.getTotalInfoStatus.status == Status.loading) {
+              return CircularProgressIndicator();
+            }
+            if (controller.getTotalInfoStatus.status == Status.error) {
+              return IconButton(
+                onPressed: () => logic.getTotalInfo(),
+                icon: Icon(Icons.refresh),
+                color: Theme.of(context).primaryColor,
+              );
+            }
+            return Column(
               spacing: 10,
               children: [
                 Row(
@@ -102,14 +104,15 @@ class AccountingPage extends GetView<AccountingPageController> {
                   children: [
                     Expanded(
                         child: BoxWidget(
-                            boxColor: Colors.grey.withValues(alpha: 0.2),
-                            title: 'All',
+                            boxColor: Colors.grey,
+                            title: 'Costs',
                             value: logic.totalInfo.allExpense)),
                     Expanded(
-                        child: BoxWidget(
-                            boxColor: Colors.grey.withValues(alpha: 0.2),
-                            title: 'balance',
-                            value: logic.totalInfo.balance))
+                      child: BoxWidget(
+                          boxColor: Colors.grey,
+                          title: 'Balance',
+                          value: logic.totalInfo.balance),
+                    )
                   ],
                 ),
                 Row(
@@ -117,23 +120,42 @@ class AccountingPage extends GetView<AccountingPageController> {
                   children: [
                     Expanded(
                       child: BoxWidget(
-                        boxColor: Colors.grey.withValues(alpha: 0.2),
-                        title: 'Hossein',
+                        boxColor: Colors.red,
+                        title: 'Hossein withdrawals',
                         value: logic.totalInfo.hosseinExpenses,
                       ),
                     ),
                     Expanded(
                       child: BoxWidget(
-                        boxColor: Colors.grey.withValues(alpha: 0.2),
-                        title: 'Elham',
+                        boxColor: Colors.green,
+                        title: 'Hossein deposits',
+                        value: logic.totalInfo.hosseinExpenses,
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  spacing: 10,
+                  children: [
+                    Expanded(
+                      child: BoxWidget(
+                        boxColor: Colors.green,
+                        title: 'Elham deposits',
+                        value: logic.totalInfo.eliExpenses,
+                      ),
+                    ),
+                    Expanded(
+                      child: BoxWidget(
+                        boxColor: Colors.red,
+                        title: 'Elham withdrawals',
                         value: logic.totalInfo.eliExpenses,
                       ),
                     )
                   ],
                 ),
               ],
-            ),
-          );
-        });
+            );
+          }),
+    );
   }
 }

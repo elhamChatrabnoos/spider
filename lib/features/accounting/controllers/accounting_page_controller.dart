@@ -47,12 +47,11 @@ class AccountingPageController extends GetxController {
   void listenToScroll() {
     scrollController.addListener(
       () {
-        if (scrollController.position.maxScrollExtent >
-            scrollController.position.pixels) {
-          if (pageNumber < totalPages) {
-            pageNumber += 1;
-            getTransactions(pageNumber: pageNumber, getMore: true);
-          }
+        if (scrollController.position.pixels >=
+                scrollController.position.maxScrollExtent &&
+            pageNumber < totalPages) {
+          pageNumber += 1;
+          getTransactions(pageNumber: pageNumber, getMore: true);
         }
       },
     );
@@ -61,7 +60,7 @@ class AccountingPageController extends GetxController {
   /// get total infos
   RequestStatus getTotalInfoStatus = RequestStatus();
   final String getTotalInfoUpdateKey = 'getTransactionsUpdateKey';
-   TotalInfo totalInfo = TotalInfo();
+  TotalInfo totalInfo = TotalInfo();
 
   Future<void> getTotalInfo() async {
     getTotalInfoStatus.loading();
