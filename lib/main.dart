@@ -7,6 +7,7 @@ import 'package:sockettest/features/home/views/pages/home_page.dart';
 import 'package:sockettest/features/login/views/pages/login_page.dart';
 import 'package:sockettest/features/main/bindings/main_page_binding.dart';
 import 'package:sockettest/features/main/views/pages/main_page.dart';
+import 'package:sockettest/features/splash/splash_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       initialBinding: MainPageBinding(),
       debugShowCheckedModeBanner: false,
       theme: AppTheme.appThemeLight(),
-      home: MainPage(),
+      home: SplashPage(),
     );
   }
 }
