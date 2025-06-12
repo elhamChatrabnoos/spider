@@ -4,6 +4,8 @@ class ApiAddresses{
   static const String addAccount = '/accountant/api/addnewaccount';
   static const String invoice = '/invoice/create/';
   static const String getTransactions = '/invoice/all';
+  static const String getTotal = '/all';
+
 
   static const String login = '/login/';
   static const String reasons = '/cause/all';

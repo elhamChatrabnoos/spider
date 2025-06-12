@@ -48,29 +48,29 @@ class AppTheme {
               // headline
               headlineLarge: _customTextStyle(
                 fontSize: 32,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w900,
               ),
               headlineMedium: _customTextStyle(
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w900,
                 fontSize: 28,
               ),
               headlineSmall: _customTextStyle(
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w900,
                 fontSize: 24,
               ),
 
               // title
               titleLarge: _customTextStyle(
                 fontSize: 22,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w800,
               ),
               titleMedium: _customTextStyle(
                 fontSize: 16,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w800,
               ),
-              titleSmall: GoogleFonts.mukta(
+              titleSmall: _customTextStyle(
                 fontSize: 14,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w800,
               ),
 
               // body
@@ -91,13 +91,13 @@ class AppTheme {
               ),
               labelMedium: _customTextStyle(
                 fontSize: 12,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w700,
                 fontFamily: GoogleFonts.interTextTheme.toString(),
                 color: onTertiary,
               ),
               labelSmall: _customTextStyle(
                 fontSize: 11,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w700,
               ),
             ),
       ),

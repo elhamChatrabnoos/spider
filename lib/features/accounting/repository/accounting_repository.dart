@@ -5,8 +5,22 @@ import 'package:sockettest/app/network/response_status.dart';
 import 'package:sockettest/app/network/server_response.dart';
 import 'package:sockettest/features/accounting/models/get_transactions_response.dart';
 import 'package:sockettest/features/accounting/models/reasons_response_model.dart';
+import 'package:sockettest/features/accounting/models/total_info_response.dart';
 
 class AccountingRepository {
+
+  /// get total information
+  Future<ResponseStatus<TotalInfoResponse>> getTotal() async {
+    try {
+      final response = await AppHelper.dioConfig.dio.get(ApiAddresses.getTotal);
+      final TotalInfoResponse model =
+          TotalInfoResponse.fromJson(response.data);
+      return ResponseSuccess(model);
+    } on DioException catch (error) {
+      return ResponseFailed(AppHelper.checkException(error));
+    }
+  }
+
   /// get all transaction
   Future<ResponseStatus<GetTransactionsResponse>> getTransactions(
       int pageNumber) async {

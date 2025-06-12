@@ -60,7 +60,8 @@ class TransactionItem extends StatelessWidget {
                   transaction.type?.toLowerCase() == 'deposit'
                       ? 'Deposit'
                       : 'Withdraw',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w900,
                       color: transaction.type?.toLowerCase() == 'deposit'
                           ? Colors.green
                           : Colors.red),
@@ -71,7 +72,7 @@ class TransactionItem extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall
-                      ?.copyWith(color: Theme.of(context).primaryColor),
+                      ?.copyWith(color: Theme.of(context).primaryColor, fontSize: 10),
                 ),
               ],
             ),
@@ -87,7 +88,7 @@ class TransactionItem extends StatelessWidget {
     Color textColor = isHossein ? Colors.white : Colors.black;
 
     return Container(
-      padding: EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
+      padding: EdgeInsets.only(left: 20, right: 20, top: 3, bottom: 5),
       decoration: BoxDecoration(
         color: containerColor.withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(50),
@@ -95,7 +96,7 @@ class TransactionItem extends StatelessWidget {
       child: Text(
         '${transaction.user?.name}',
         style:
-            Theme.of(context).textTheme.titleMedium?.copyWith(color: textColor),
+            Theme.of(context).textTheme.labelLarge?.copyWith(color: textColor),
       ),
     );
   }
@@ -105,7 +106,7 @@ class TransactionItem extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text('$title: ', style: Theme.of(context).textTheme.titleSmall),
+        Text('$title: ', style: Theme.of(context).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w500)),
         SizedBox(width: 5),
         Expanded(
             child: Text(

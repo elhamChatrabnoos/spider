@@ -1,16 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:sockettest/app/config/app_helper.dart';
 import 'package:sockettest/app/network/request_status.dart';
 import 'package:sockettest/app/network/response_status.dart';
 import 'package:sockettest/features/accounting/models/get_transactions_response.dart';
+import 'package:sockettest/features/accounting/models/total_info_response.dart';
 import 'package:sockettest/features/accounting/repository/accounting_repository.dart';
 
 class AccountingPageController extends GetxController {
   RequestStatus getTransactionsStatus = RequestStatus();
   final String transactionsUpdateKey = 'getTransactionsUpdateKey';
   AccountingRepository accountingRepository = AccountingRepository();
-
   List<Transaction> transactionList = [];
 
   Future<void> getTransactions({required int pageNumber, bool? getMore}) async {
@@ -57,6 +56,28 @@ class AccountingPageController extends GetxController {
         }
       },
     );
+  }
+
+  /// get total infos
+  RequestStatus getTotalInfoStatus = RequestStatus();
+  final String getTotalInfoUpdateKey = 'getTransactionsUpdateKey';
+   TotalInfo totalInfo = TotalInfo();
+
+  Future<void> getTotalInfo() async {
+    getTotalInfoStatus.loading();
+    update([getTotalInfoUpdateKey]);
+
+    final responseState = await accountingRepository.getTotal();
+
+    if (responseState is ResponseSuccess<TotalInfoResponse>) {
+      totalInfo = responseState.data?.data ?? TotalInfo();
+      getTotalInfoStatus.success();
+      update([getTotalInfoUpdateKey]);
+    }
+    if (responseState is ResponseFailed) {
+      getTotalInfoStatus.error('${responseState.error}', showMessage: false);
+      update([getTotalInfoUpdateKey]);
+    }
   }
 
   @override
