@@ -31,7 +31,6 @@ class AccountsPageController extends GetxController {
 
   @override
   void onInit() {
-    getAccounts();
     super.onInit();
   }
 

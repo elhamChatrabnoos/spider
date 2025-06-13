@@ -84,118 +84,118 @@ class AccountingPage extends GetView<AccountingPageController> {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: GetBuilder<AccountingPageController>(
-          id: controller.getTotalInfoUpdateKey,
-          builder: (logic) {
-            if (controller.getTotalInfoStatus.status == Status.loading) {
-              return CircularProgressIndicator();
-            }
-            if (controller.getTotalInfoStatus.status == Status.error) {
-              return IconButton(
-                onPressed: () => logic.getTotalInfo(),
-                icon: Icon(Icons.refresh),
-                color: Theme.of(context).primaryColor,
-              );
-            }
-            return Column(
-              spacing: 10,
-              children: [
-                Row(
-                  spacing: 10,
-                  children: [
-                    Expanded(
-                      child: BoxWidget(
-                          boxColor: Colors.grey,
-                          title: 'Costs',
-                          value: logic.totalInfo.allExpense),
-                    ),
-                    Expanded(
-                      child: BoxWidget(
-                          boxColor: Colors.grey,
-                          title: 'Balance',
-                          value: logic.totalInfo.balance),
-                    )
-                  ],
-                ),
-                Row(
-                  spacing: 10,
-                  children: [
-                    Expanded(
-                      child: BoxWidget(
-                        boxColor: Colors.red,
-                        title: 'Hossein',
-                        value: logic.totalInfo.hosseinExpenses,
-                        icon: Icon(
-                          Icons.arrow_circle_up,
-                          color: Colors.red,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: BoxWidget(
-                        boxColor: Colors.grey,
-                        title: 'Loans',
-                        value: logic.totalInfo.hosseinExpenses,
-                        icon: Icon(
-                          Icons.credit_card,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: BoxWidget(
-                        boxColor: Colors.green,
-                        title: 'Hossein',
-                        value: logic.totalInfo.hosseinExpenses,
-                        icon: Icon(
-                          Icons.arrow_circle_down,
-                          color: Colors.green,
-                        ),
-                      ),
-                    ),
-
-                  ],
-                ),
-                Row(
-                  spacing: 10,
-                  children: [
-                    Expanded(
-                      child: BoxWidget(
-                        boxColor: Colors.green,
-                        title: 'Elham',
-                        value: logic.totalInfo.eliExpenses,
-                        icon: Icon(
-                          Icons.arrow_circle_down,
-                          color: Colors.green,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: BoxWidget(
-                        boxColor: Colors.grey,
-                        title: 'Loans',
-                        value: logic.totalInfo.eliExpenses,
-                        icon: Icon(
-                          Icons.credit_card,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: BoxWidget(
-                        boxColor: Colors.red,
-                        title: 'Elham',
-                        value: logic.totalInfo.eliExpenses,
-                        icon: Icon(
-                          Icons.arrow_circle_up,
-                          color: Colors.red,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ],
+        id: controller.getTotalInfoUpdateKey,
+        builder: (logic) {
+          if (controller.getTotalInfoStatus.status == Status.loading) {
+            return CircularProgressIndicator();
+          }
+          if (controller.getTotalInfoStatus.status == Status.error) {
+            return IconButton(
+              onPressed: () => logic.getTotalInfo(),
+              icon: Icon(Icons.refresh),
+              color: Theme.of(context).primaryColor,
             );
-          }),
+          }
+          return Column(
+            spacing: 10,
+            children: [
+              Row(
+                spacing: 10,
+                children: [
+                  Expanded(
+                    child: BoxWidget(
+                        boxColor: Colors.grey,
+                        title: 'Costs',
+                        value: logic.totalInfo.allExpense),
+                  ),
+                  Expanded(
+                    child: BoxWidget(
+                        boxColor: Colors.grey,
+                        title: 'Balance',
+                        value: logic.totalInfo.balance),
+                  )
+                ],
+              ),
+              Row(
+                spacing: 10,
+                children: [
+                  Expanded(
+                    child: BoxWidget(
+                      boxColor: Colors.red,
+                      title: 'Hossein',
+                      value: logic.totalInfo.hosseinExpenses,
+                      icon: Icon(
+                        Icons.arrow_circle_up,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: BoxWidget(
+                      boxColor: Colors.grey,
+                      title: 'Loans',
+                      value: logic.totalInfo.hosseinLoan,
+                      icon: Icon(
+                        Icons.credit_card,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: BoxWidget(
+                      boxColor: Colors.green,
+                      title: 'Hossein',
+                      value: logic.totalInfo.hosseinDeposit,
+                      icon: Icon(
+                        Icons.arrow_circle_down,
+                        color: Colors.green,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                spacing: 10,
+                children: [
+                  Expanded(
+                    child: BoxWidget(
+                      boxColor: Colors.green,
+                      title: 'Elham',
+                      value: logic.totalInfo.elhamDeposit,
+                      icon: Icon(
+                        Icons.arrow_circle_down,
+                        color: Colors.green,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: BoxWidget(
+                      boxColor: Colors.grey,
+                      title: 'Loans',
+                      value: logic.totalInfo.elhamLoan,
+                      icon: Icon(
+                        Icons.credit_card,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: BoxWidget(
+                      boxColor: Colors.red,
+                      title: 'Elham',
+                      value: logic.totalInfo.eliExpenses,
+                      icon: Icon(
+                        Icons.arrow_circle_up,
+                        color: Colors.red,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

@@ -43,12 +43,20 @@ class TotalInfo {
   int? hosseinExpenses;
   int? eliExpenses;
   int? balance;
+  int? hosseinLoan;
+  int? hosseinDeposit;
+  int? elhamLoan;
+  int? elhamDeposit;
 
   TotalInfo({
     this.allExpense,
     this.hosseinExpenses,
     this.eliExpenses,
     this.balance,
+    this.elhamDeposit,
+    this.elhamLoan,
+    this.hosseinDeposit,
+    this.hosseinLoan,
   });
 
   factory TotalInfo.fromRawJson(String str) => TotalInfo.fromJson(json.decode(str));
@@ -60,6 +68,10 @@ class TotalInfo {
         hosseinExpenses: json["hosseinExpenses"],
         eliExpenses: json["eliExpenses"],
         balance: json["balance"],
+        hosseinDeposit: json["hosseinDepo"],
+        hosseinLoan: json["hosseinLoan"],
+        elhamDeposit: json["elhamDepo"],
+        elhamLoan: json["elhamLoan"],
       );
 
   Map<String, dynamic> toJson() => {
