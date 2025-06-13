@@ -4,6 +4,7 @@ import 'package:sockettest/app/widgets/my_bottom_tab_bar_widget.dart';
 import 'package:sockettest/features/accounting/views/pages/accounting_page.dart';
 import 'package:sockettest/features/accounts/views/pages/accounts_page.dart';
 import 'package:sockettest/features/home/views/pages/home_page.dart';
+import 'package:sockettest/features/loans/views/pages/loans_management_page.dart';
 import 'package:sockettest/features/main/controllers/main_page_controller.dart';
 
 class MainPage extends GetView<MainPageController> {
@@ -14,7 +15,7 @@ class MainPage extends GetView<MainPageController> {
   final List<Widget> _tabs = [
     HomePage(key: PageStorageKey<String>('page1')),
     AccountingPage(key: PageStorageKey<String>('page2')),
-    const AccountsPage(key: PageStorageKey<String>('page3')),
+    const LoansManagementPage(key: PageStorageKey<String>('page3')),
     const SizedBox(key: PageStorageKey<String>('page4'))
   ];
   final PageStorageBucket bucket = PageStorageBucket();

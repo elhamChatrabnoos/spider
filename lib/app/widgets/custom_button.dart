@@ -62,7 +62,9 @@ class CustomButton extends StatelessWidget {
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(borderRadius ?? 3),
               side: BorderSide(
-                color: borderColor ?? buttonColor ?? Theme.of(context).colorScheme.primary,
+                color: borderColor ??
+                    buttonColor ??
+                    Theme.of(context).colorScheme.primary,
                 width: borderWidth ?? 0.5,
               ),
             ),
@@ -76,10 +78,12 @@ class CustomButton extends StatelessWidget {
                     right: paddingLeftRight ?? 10,
                   ),
                 )
-              : WidgetStateProperty.all(EdgeInsets.all(paddingSize ?? 10)),
+              // : WidgetStateProperty.all(EdgeInsets.all(paddingSize ?? 10)),
+              : null,
           alignment: Alignment.center,
           backgroundColor: enabled!
-              ? WidgetStateProperty.all(buttonColor ??  Theme.of(context).colorScheme.primary)
+              ? WidgetStateProperty.all(
+                  buttonColor ?? Theme.of(context).colorScheme.primary)
               : WidgetStateProperty.all(buttonColor?.withOpacity(0.5) ??
                   Colors.grey.withOpacity(0.5)),
         ),
@@ -90,16 +94,20 @@ class CustomButton extends StatelessWidget {
                 width: 20,
                 child: CircularProgressIndicator(color: Colors.white))
             : Container(
+                alignment: Alignment.center,
                 padding: EdgeInsets.zero,
-                child: widget ??
-                    Text(
-                      text,
-                      style: textStyle ??
-                          TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: textSize,
-                          ),
-                    ),
+                child: Center(
+                  child: widget ??
+                      Text(
+                        textAlign: TextAlign.center,
+                        text,
+                        style: textStyle ??
+                            TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: textSize,
+                            ),
+                      ),
+                ),
               ),
       ),
     );

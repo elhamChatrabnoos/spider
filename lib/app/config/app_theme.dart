@@ -2,15 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // static const Color primary = Color(0xFFFFEA00);
-  // static const Color onPrimary = Color(0xFFFFFFFF);
-  // static const primaryContainer = Color(0xff8d8d8d);
-  // static const onPrimaryContainer = Color(0xff4b4b4b);
-  // static const secondary = Color(0xff343C45);
-  // static const onSurface = Color(0xFFFFFFFF);
-  // static const tertiary = Color(0xFF000000);
-  // static const onTertiary = Color(0xFFFFFFFF);
-
 
   static const Color primary = Color(0xFFFFEA00);
   static const Color onPrimary = Color(0xFF000000);
@@ -21,6 +12,10 @@ class AppTheme {
   static const surface = Color(0xff343C45);
   static const onSurface = Color(0xFFFFFFFF);
   static const tertiary = Color(0xff555559);
+  static const Color red = Color(0xFFFF0008);
+  static const Color green = Color(0xFF00BD31);
+  static const Color orange = Color(0xFFFF8000);
+
 
   static const double textInputRadius = 16;
 

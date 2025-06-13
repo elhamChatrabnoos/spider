@@ -1,0 +1,7 @@
+class LoanResponse{
+
+}
+
+class LoanModel{
+
+}

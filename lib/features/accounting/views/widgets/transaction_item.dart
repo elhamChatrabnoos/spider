@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sockettest/app/config/app_helper.dart';
+import 'package:sockettest/app/widgets/row_info_widget.dart';
+import 'package:sockettest/app/widgets/user_name_widget.dart';
 import 'package:sockettest/features/accounting/models/get_transactions_response.dart';
 
 class TransactionItem extends StatelessWidget {
@@ -15,11 +17,11 @@ class TransactionItem extends StatelessWidget {
         padding: EdgeInsets.all(10),
         margin: EdgeInsets.all(5),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(5),
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).colorScheme.onTertiary.withOpacity(0.2),
+              color: Theme.of(context).colorScheme.onTertiary.withValues(alpha: 0.2),
               spreadRadius: 5,
               blurRadius: 12,
               offset: const Offset(2, 2),
@@ -39,32 +41,29 @@ class TransactionItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _userName(context),
+                  UserNameWidget(userName: transaction.user?.name ?? ''),
                   SizedBox(height: 10),
-                  _buildRow(
-                    context,
-                    'Amount',
-                    NumberFormat('#,##0', 'en_US')
+                  RowInfoWidget(
+                    title: 'Amount:',
+                    value: NumberFormat('#,##0', 'en_US')
                         .format(transaction.amount)
                         .toString(),
                   ),
                   SizedBox(height: 10),
-                  _buildRow(context, 'Reason', transaction.cause?.causes),
+                  RowInfoWidget(title: 'Reason:',value: transaction.cause?.causes ?? ''),
                 ],
               ),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
+                Icon(
                   transaction.type?.toLowerCase() == 'deposit'
-                      ? 'Deposit'
-                      : 'Withdraw',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w900,
-                      color: transaction.type?.toLowerCase() == 'deposit'
-                          ? Colors.green
-                          : Colors.red),
+                      ? Icons.arrow_circle_down
+                      : Icons.arrow_circle_up,
+                  color: transaction.type?.toLowerCase() == 'deposit'
+                      ? Colors.green
+                      : Colors.red,
                 ),
                 Spacer(),
                 Text(
@@ -72,7 +71,7 @@ class TransactionItem extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall
-                      ?.copyWith(color: Theme.of(context).primaryColor, fontSize: 10),
+                      ?.copyWith(fontSize: 10),
                 ),
               ],
             ),
@@ -82,38 +81,6 @@ class TransactionItem extends StatelessWidget {
     );
   }
 
-  Container _userName(BuildContext context) {
-    bool isHossein = transaction.user?.name?.toLowerCase() == 'hossein';
-    Color containerColor = isHossein ? Colors.black : Colors.white;
-    Color textColor = isHossein ? Colors.white : Colors.black;
 
-    return Container(
-      padding: EdgeInsets.only(left: 20, right: 20, top: 3, bottom: 5),
-      decoration: BoxDecoration(
-        color: containerColor.withValues(alpha: 0.7),
-        borderRadius: BorderRadius.circular(50),
-      ),
-      child: Text(
-        '${transaction.user?.name}',
-        style:
-            Theme.of(context).textTheme.labelLarge?.copyWith(color: textColor),
-      ),
-    );
-  }
 
-  Widget _buildRow(BuildContext context, title, value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text('$title: ', style: Theme.of(context).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w500)),
-        SizedBox(width: 5),
-        Expanded(
-            child: Text(
-                overflow: TextOverflow.ellipsis,
-                value,
-                style: Theme.of(context).textTheme.bodySmall)),
-      ],
-    );
-  }
 }
