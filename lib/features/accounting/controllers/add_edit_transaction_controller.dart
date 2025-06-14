@@ -51,13 +51,15 @@ class AddEditTransactionDialogController extends GetxController {
     final responseState =
         await accountingRepository.addTransaction(transaction: transaction);
 
-    if (responseState is ResponseSuccess<ServerResponse>) {
-      transaction.createdAt = responseState.data!.timestamp;
+    if (responseState is ResponseSuccess<Transaction>) {
+       Transaction transactionResponse = responseState.data ?? transaction;
+
       Get.back();
       /// add transaction locally to transaction list
-      Get.find<AccountingPageController>().addTransaction(transaction);
+      Get.find<AccountingPageController>().addTransaction(transactionResponse);
+
       addTransactionStatus.success(
-          message: responseState.data?.message, title: 'Success');
+          message: '${transaction.type} added successfully.', title: 'Success');
       update([addTransactionUpdateKey]);
     }
     if (responseState is ResponseFailed) {

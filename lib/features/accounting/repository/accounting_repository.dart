@@ -8,13 +8,11 @@ import 'package:sockettest/features/accounting/models/reasons_response_model.dar
 import 'package:sockettest/features/accounting/models/total_info_response.dart';
 
 class AccountingRepository {
-
   /// get total information
   Future<ResponseStatus<TotalInfoResponse>> getTotal() async {
     try {
       final response = await AppHelper.dioConfig.dio.get(ApiAddresses.getTotal);
-      final TotalInfoResponse model =
-          TotalInfoResponse.fromJson(response.data);
+      final TotalInfoResponse model = TotalInfoResponse.fromJson(response.data);
       return ResponseSuccess(model);
     } on DioException catch (error) {
       return ResponseFailed(AppHelper.checkException(error));
@@ -49,9 +47,8 @@ class AccountingRepository {
   }
 
   /// add transaction
-  Future<ResponseStatus<ServerResponse>> addTransaction({
-    required Transaction transaction,
-  }) async {
+  Future<ResponseStatus<Transaction>> addTransaction(
+      {required Transaction transaction}) async {
     try {
       var response;
       response = await AppHelper.dioConfig.dio.post(
@@ -64,7 +61,7 @@ class AccountingRepository {
         },
       );
 
-      final ServerResponse model = ServerResponse.fromJson(response.data);
+      final Transaction model = Transaction.fromJson(response.data['data']);
       return ResponseSuccess(model);
     } on DioException catch (error) {
       return ResponseFailed(AppHelper.checkException(error));

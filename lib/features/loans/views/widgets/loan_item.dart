@@ -80,6 +80,7 @@ class LoanItem extends StatelessWidget {
                   children: [
                     CustomButton(
                       width: 0,
+                      height: 35,
                       text: 'Payment',
                       borderRadius: 50,
                       buttonColor: AppTheme.green.withValues(alpha: 0.3),
@@ -87,6 +88,7 @@ class LoanItem extends StatelessWidget {
                     ),
                     CustomButton(
                       width: 0,
+                      height: 35,
                       text: 'Settlement',
                       borderRadius: 50,
                       buttonColor: AppTheme.orange.withValues(alpha: 0.4),

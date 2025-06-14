@@ -11,7 +11,7 @@ class MyBottomTabBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
+      height: 80,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.2),
         boxShadow: [
@@ -19,7 +19,8 @@ class MyBottomTabBarWidget extends StatelessWidget {
             blurRadius: 10,
             offset: const Offset(1, 1),
             spreadRadius: 2,
-            color: Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.2),
+            color:
+                Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.2),
           )
         ],
       ),
@@ -31,7 +32,6 @@ class MyBottomTabBarWidget extends StatelessWidget {
             iconData: Icons.home,
             onTap: ontapNavItem(0),
             title: 'home',
-            // assetName: AppAssets.homeIcon,
           ),
         ),
         Expanded(
@@ -87,50 +87,47 @@ class TabBarItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        decoration: const BoxDecoration(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              // height: 44,
-              width: 44,
-              decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(22)),
-              child: assetName != null
-                  ? Center(
-                      child: SvgPicture.asset(
-                        assetName!,
-                        colorFilter: ColorFilter.mode(
-                          isSelected
-                              ? Theme.of(context).colorScheme.primary
-                              : Theme.of(context).colorScheme.onPrimary,
-                          BlendMode.srcIn,
-                        ),
-                      ),
-                    )
-                  : Icon(
-                      iconData,
-                      color: isSelected
-                          ? Theme.of(context).colorScheme.primary
-                          : const Color(0xFFBDBDBD),
-                    ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 44,
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(22),
             ),
-            isSelected
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: Container(
-                      width: 15,
-                      height: 5,
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.secondary,
-                          borderRadius: BorderRadius.circular(100)),
+            child: assetName != null
+                ? Center(
+                    child: SvgPicture.asset(
+                      assetName!,
+                      colorFilter: ColorFilter.mode(
+                        isSelected
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.onPrimary,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   )
-                : const SizedBox()
-          ],
-        ),
+                : Icon(
+                    iconData,
+                    color: isSelected
+                        ? Theme.of(context).colorScheme.primary
+                        : const Color(0xFFBDBDBD),
+                  ),
+          ),
+          isSelected
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: Container(
+                    width: 15,
+                    height: 5,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondary,
+                        borderRadius: BorderRadius.circular(100)),
+                  ),
+                )
+              : const SizedBox()
+        ],
       ),
     );
   }

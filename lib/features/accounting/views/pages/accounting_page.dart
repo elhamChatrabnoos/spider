@@ -4,7 +4,7 @@ import 'package:sockettest/app/network/request_status.dart';
 import 'package:sockettest/app/widgets/error_widget.dart';
 import 'package:sockettest/app/widgets/my_progress_indicator_widget.dart';
 import 'package:sockettest/features/accounting/controllers/accounting_page_controller.dart';
-import 'package:sockettest/features/accounting/views/widgets/add_edit_accounting_dialog.dart';
+import 'package:sockettest/features/accounting/views/widgets/add_edit_transaction_dialog.dart';
 import 'package:sockettest/features/accounting/views/widgets/box_widget.dart';
 import 'package:sockettest/features/accounting/views/widgets/transaction_item.dart';
 import 'package:sockettest/features/accounts/controllers/accounts_page_controller.dart';
@@ -27,7 +27,7 @@ class AccountingPage extends GetView<AccountingPageController> {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (context) => AddEditAccountingDialog(),
+                builder: (context) => AddEditTransactionDialog(),
               );
             },
             icon: Icon(
@@ -104,15 +104,24 @@ class AccountingPage extends GetView<AccountingPageController> {
                 children: [
                   Expanded(
                     child: BoxWidget(
+                        icon: Icon(
+                          Icons.trending_down,
+                          color: Theme.of(context).colorScheme.onSecondary,
+                        ),
                         boxColor: Colors.grey,
                         title: 'Costs',
                         value: logic.totalInfo.allExpense),
                   ),
                   Expanded(
                     child: BoxWidget(
-                        boxColor: Colors.grey,
-                        title: 'Balance',
-                        value: logic.totalInfo.balance),
+                      icon: Icon(
+                        Icons.stacked_bar_chart,
+                        color: Theme.of(context).colorScheme.onSecondary,
+                      ),
+                      boxColor: Colors.grey,
+                      title: 'Balance',
+                      value: logic.totalInfo.balance,
+                    ),
                   )
                 ],
               ),

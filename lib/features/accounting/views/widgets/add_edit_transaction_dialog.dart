@@ -10,8 +10,8 @@ import 'package:sockettest/features/accounting/controllers/add_edit_transaction_
 import 'package:sockettest/features/accounting/models/reasons_response_model.dart';
 import 'package:sockettest/features/accounting/views/widgets/auto_complete_field.dart';
 
-class AddEditAccountingDialog extends StatelessWidget {
-  const AddEditAccountingDialog({super.key});
+class AddEditTransactionDialog extends StatelessWidget {
+  const AddEditTransactionDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
