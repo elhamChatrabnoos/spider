@@ -41,9 +41,11 @@ class MainPage extends GetView<MainPageController> {
               child: _tabs[controller.currentBottomTabIndex],
             ),
           ),
-          bottomNavigationBar: MyBottomTabBarWidget(
-            currentIndex: controller.currentBottomTabIndex,
-            ontapNavItem: controller.onTapNavItem,
+          bottomNavigationBar: SafeArea(
+            child: MyBottomTabBarWidget(
+              currentIndex: controller.currentBottomTabIndex,
+              ontapNavItem: controller.onTapNavItem,
+            ),
           ),
         );
       },

@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_tts/flutter_tts.dart';
+// import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:sockettest/app/config/app_helper.dart';
@@ -49,7 +49,7 @@ class HomePageController extends GetxController {
         AppHelper.customPrint('message: ${data['message']}');
 
         receivedMessage1.add(data['data']);
-        speak(data['message']);
+        // speak(data['message']);
       },
     );
 
@@ -115,52 +115,52 @@ class HomePageController extends GetxController {
   }
 
   /// change response to speech
-  FlutterTts flutterTts = FlutterTts();
-
-  bool get isAndroid => !kIsWeb && Platform.isAndroid;
-  double volume = 0.5;
-  double pitch = 1.0;
-  double rate = 0.45;
-
-  Future<void> _getDefaultEngine() async {
-    var engine = await flutterTts.getDefaultEngine;
-    if (engine != null) {
-      print(engine);
-    }
-  }
-
-  Future<void> _getDefaultVoice() async {
-    var voice = await flutterTts.getDefaultVoice;
-    if (voice != null) {
-      print(voice);
-    }
-  }
-
-  void initTts() {
-    flutterTts = FlutterTts();
-    _setAwaitOptions();
-
-    if (isAndroid) {
-      _getDefaultEngine();
-      _getDefaultVoice();
-    }
-  }
-
-  Future<void> speak(String text) async {
-    await flutterTts.setVolume(volume);
-    await flutterTts.setSpeechRate(rate);
-    await flutterTts.setPitch(pitch);
-    await flutterTts.speak(text);
-  }
-
-  Future<void> _setAwaitOptions() async {
-    await flutterTts.awaitSpeakCompletion(true);
-  }
-
-  @override
-  void dispose() {
-    flutterTts.stop();
-    flutterTts.clearVoice();
-    super.dispose();
-  }
+  // FlutterTts flutterTts = FlutterTts();
+  //
+  // bool get isAndroid => !kIsWeb && Platform.isAndroid;
+  // double volume = 0.5;
+  // double pitch = 1.0;
+  // double rate = 0.45;
+  //
+  // Future<void> _getDefaultEngine() async {
+  //   var engine = await flutterTts.getDefaultEngine;
+  //   if (engine != null) {
+  //     print(engine);
+  //   }
+  // }
+  //
+  // Future<void> _getDefaultVoice() async {
+  //   var voice = await flutterTts.getDefaultVoice;
+  //   if (voice != null) {
+  //     print(voice);
+  //   }
+  // }
+  //
+  // void initTts() {
+  //   flutterTts = FlutterTts();
+  //   _setAwaitOptions();
+  //
+  //   if (isAndroid) {
+  //     _getDefaultEngine();
+  //     _getDefaultVoice();
+  //   }
+  // }
+  //
+  // Future<void> speak(String text) async {
+  //   await flutterTts.setVolume(volume);
+  //   await flutterTts.setSpeechRate(rate);
+  //   await flutterTts.setPitch(pitch);
+  //   await flutterTts.speak(text);
+  // }
+  //
+  // Future<void> _setAwaitOptions() async {
+  //   await flutterTts.awaitSpeakCompletion(true);
+  // }
+  //
+  // @override
+  // void dispose() {
+  //   flutterTts.stop();
+  //   flutterTts.clearVoice();
+  //   super.dispose();
+  // }
 }

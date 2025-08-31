@@ -130,12 +130,12 @@ class AccountingPage extends GetView<AccountingPageController> {
                 children: [
                   Expanded(
                     child: BoxWidget(
-                      boxColor: Colors.red,
+                      boxColor: Colors.green,
                       title: 'Hossein',
-                      value: logic.totalInfo.hosseinExpenses,
+                      value: logic.totalInfo.hosseinDeposit,
                       icon: Icon(
-                        Icons.arrow_circle_up,
-                        color: Colors.red,
+                        Icons.arrow_circle_down,
+                        color: Colors.green,
                       ),
                     ),
                   ),
@@ -153,8 +153,8 @@ class AccountingPage extends GetView<AccountingPageController> {
                   Expanded(
                     child: BoxWidget(
                       boxColor: Colors.green,
-                      title: 'Hossein',
-                      value: logic.totalInfo.hosseinDeposit,
+                      title: 'Elham',
+                      value: logic.totalInfo.elhamDeposit,
                       icon: Icon(
                         Icons.arrow_circle_down,
                         color: Colors.green,
@@ -168,12 +168,12 @@ class AccountingPage extends GetView<AccountingPageController> {
                 children: [
                   Expanded(
                     child: BoxWidget(
-                      boxColor: Colors.green,
-                      title: 'Elham',
-                      value: logic.totalInfo.elhamDeposit,
+                      boxColor: Colors.red,
+                      title: 'Hossein',
+                      value: logic.totalInfo.hosseinExpenses,
                       icon: Icon(
-                        Icons.arrow_circle_down,
-                        color: Colors.green,
+                        Icons.arrow_circle_up,
+                        color: Colors.red,
                       ),
                     ),
                   ),
